@@ -1,8 +1,7 @@
-from iss.audioproc import AudioProcessor
-
 import sys
-
 from pathlib import Path
+
+from iss.audioproc import AudioProcessor
 
 PYTHON_MIN_VERSION = (3, 5)
 
@@ -21,3 +20,4 @@ def setup_environment():
 
 def process_all():
     proc = AudioProcessor()
+    proc.process_signals()

@@ -1,8 +1,30 @@
-from iss import plotter
-
 import numpy as np
+
+CORRELATION_MARGIN = 50
 
 
 def center_clip_frame(frame):
     cliplim = max(frame.min(), frame.max(), key=abs)
-    return np.asarray([1 if sample > 0.7*cliplim else -1 if sample < -0.7*cliplim else 0 for sample in frame])
+    return np.asarray([1.0 if sample > 0.7 * cliplim else -1.0 if sample < -0.7 * cliplim else 0.0 for sample in frame])
+
+
+def autocorrelate_frame(frame, correlation_margin=CORRELATION_MARGIN):
+    rs = []
+
+    for k in range(0, 300):
+        f1 = frame[k:]
+        f2 = frame[:len(frame) - k]
+
+        rs.append(np.sum(f1.dot(f2)))
+
+    return np.asarray(rs)
+
+
+def frames_to_base_frequency(frames):
+    freqs = []
+
+    for frame in frames:
+        frame_frequency = np.argmax(autocorrelate_frame(frame)[CORRELATION_MARGIN:]) + CORRELATION_MARGIN
+        freqs.append(frame_frequency)
+
+    return np.asarray(freqs)
