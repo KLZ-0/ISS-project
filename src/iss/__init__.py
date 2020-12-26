@@ -1,5 +1,5 @@
-from iss import core
+from iss import core, input_proc
 
 
 def solve():
-    core.run()
+    core.setup_environment()
