@@ -1,3 +1,5 @@
+from iss.audioproc import process_file
+
 import sys
 
 from pathlib import Path
@@ -15,3 +17,8 @@ def setup_environment():
         sys.exit(1)
 
     Path("outputs").mkdir(parents=True, exist_ok=True)
+
+
+def process_all():
+    process_file("maskoff_tone.wav")
+    process_file("maskon_tone.wav")
