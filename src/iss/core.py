@@ -1,4 +1,4 @@
-from iss.audioproc import process_file
+from iss.audioproc import AudioProcessor
 
 import sys
 
@@ -20,5 +20,4 @@ def setup_environment():
 
 
 def process_all():
-    process_file("maskoff_tone.wav")
-    process_file("maskon_tone.wav")
+    proc = AudioProcessor()
