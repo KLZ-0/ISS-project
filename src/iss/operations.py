@@ -8,7 +8,7 @@ def center_clip_frame(frame):
     return np.asarray([1.0 if sample > 0.7 * cliplim else -1.0 if sample < -0.7 * cliplim else 0.0 for sample in frame])
 
 
-def autocorrelate_frame(frame, correlation_margin=CORRELATION_MARGIN):
+def autocorrelate_frame(frame):
     rs = []
 
     for k in range(0, 300):
