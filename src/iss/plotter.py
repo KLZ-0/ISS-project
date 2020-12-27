@@ -16,10 +16,10 @@ def debug(data):
     plt.savefig(path.join("outputs", "test.pdf"))
 
 
-def plot(data, filename, tick_start=0, tick_end=20):
-    time = np.linspace(0., len(data), data.shape[0])
+def plot(data, filename, figsize=(8, 4)):
+    time = np.linspace(0., len(data) - 1, data.shape[0])
     # time = np.arange(0, len(data), 1)
-    plt.figure(figsize=(8, 4))
+    plt.figure(figsize=figsize)
     plt.plot(time, data)
 
     # plt.gca().set_xticks([0, len(data)/4, len(data)/2, 3*len(data)/4, len(data)])
@@ -32,10 +32,10 @@ def plot(data, filename, tick_start=0, tick_end=20):
     plt.savefig(path.join("outputs", filename))
 
 
-def plot_list(datalist, filename, tick_start=0, tick_end=20):
-    time = np.linspace(0., len(datalist[0]), datalist[0].shape[0])
+def plot_list(datalist, filename, figsize=(8, 4)):
+    time = np.linspace(0., len(datalist[0]) - 1, datalist[0].shape[0])
     # time = np.arange(0, len(data), 1)
-    plt.figure(figsize=(8, 4))
+    plt.figure(figsize=figsize)
     for data in datalist:
         plt.plot(time, data)
 

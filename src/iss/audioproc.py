@@ -15,9 +15,9 @@ class AudioProcessor:
     def process_signals(self):
         wf = operations.center_clip_frame(self.on_frames[0])
         plotter.plot(wf, "frame_clipped.pdf")
-        wf = operations.autocorrelate_frame(wf)
+        wf = operations.autocorrelate_frame(wf, 0)
         plotter.plot(wf, "frame_autocorrelated.pdf")
 
         freqs1 = operations.frames_to_base_frequency(self.off_frames, self.off_sr)
         freqs2 = operations.frames_to_base_frequency(self.on_frames, self.on_sr)
-        plotter.plot_list([freqs1, freqs2], "test2.pdf")
+        plotter.plot_list([freqs1, freqs2], "base_frequencies.pdf", figsize=(16, 4))
