@@ -1,6 +1,6 @@
 import numpy as np
 
-CORRELATION_MARGIN = 50
+CORRELATION_MARGIN = 30
 
 
 def center_clip_frame(frame):
@@ -20,11 +20,11 @@ def autocorrelate_frame(frame):
     return np.asarray(rs)
 
 
-def frames_to_base_frequency(frames):
+def frames_to_base_frequency(frames, samplerate):
     freqs = []
 
     for frame in frames:
-        frame_frequency = np.argmax(autocorrelate_frame(frame)[CORRELATION_MARGIN:]) + CORRELATION_MARGIN
-        freqs.append(frame_frequency)
+        lag = np.argmax(autocorrelate_frame(frame)[CORRELATION_MARGIN:]) + CORRELATION_MARGIN
+        freqs.append(samplerate / lag)
 
     return np.asarray(freqs)

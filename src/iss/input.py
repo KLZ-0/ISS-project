@@ -1,16 +1,16 @@
-from iss import plotter
-from iss.res import audiopath, frame_size
+from os import path
 
 import numpy as np
 import soundfile
-from scipy.io import wavfile
-from os import path
+
+from iss import plotter
+from iss.res import audiopath, frame_size
 
 
-def load_data(filename):
+def load_data(filename, delay):
     # load data
     data, samplerate = soundfile.read(path.join(audiopath, filename))
-    data = data[0:samplerate]
+    data = data[delay:samplerate + delay]
     # samplerate, data = wavfile.read(path.join(audiopath, filename))
     # data = data[0:samplerate].astype(np.float32)
 
@@ -26,21 +26,21 @@ def load_data(filename):
     return data, samplerate
 
 
-def load_frames(filename):
-    data, samplerate = load_data(filename)
+def load_frames(filename, delay):
+    data, samplerate = load_data(filename, delay)
 
     # 20ms frames @ 16kHz
     frame_len = int(frame_size * (samplerate / 1000))
-    frame_step = int(frame_len/2)
+    frame_step = int(frame_len / 2)
 
     frames = []
     for i in range(99):
-        frames.append(data[i*frame_step:(i*frame_step) + frame_len])
+        frames.append(data[i * frame_step:(i * frame_step) + frame_len])
 
-    return frames
+    return frames, samplerate
 
 
-def load_file(filename):
-    frames = load_frames(filename)
+def load_file(filename, delay=0):
+    frames, samplerate = load_frames(filename, delay)
     plotter.plot(frames[0], path.splitext(filename)[0] + "_frame.pdf")
-    return frames
+    return frames, samplerate
