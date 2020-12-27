@@ -34,4 +34,4 @@ def frames_to_base_frequency(frames, samplerate):
 
 
 def spectrum(frames):
-    return np.asarray([np.abs(fft(frame, 1024))[:512] for frame in frames])
+    return np.asarray([np.abs(fft(frame, 1024)[:512]) ** 2 for frame in frames])
