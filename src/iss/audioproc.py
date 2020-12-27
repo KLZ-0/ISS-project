@@ -52,12 +52,8 @@ class AudioProcessor:
         print("ON", "\n- Mean:\t\t", np.mean(freqs_on), "\n- Variance:\t", np.var(freqs_on))
 
     def task5(self):
-        fft_data = operations.spectrum(self.off_frames)
-        fft_data = 10 * np.log10(fft_data + 1e-20)
-
+        fft_data = operations.logarithmic_spectrum(self.off_frames)
         plotter.img(fft_data.T, "spectrum_maskoff.pdf", title="Spectrogram - mask off")
 
-        fft_data = operations.spectrum(self.on_frames)
-        fft_data = 10 * np.log10(fft_data + 1e-20)
-
+        fft_data = operations.logarithmic_spectrum(self.on_frames)
         plotter.img(fft_data.T, "spectrum_maskon.pdf", title="Spectrogram - mask on")
