@@ -45,6 +45,6 @@ def load_frames(filename, delay):
 def load_file(filename, delay=0):
     frames, samplerate = load_frames(filename, delay)
     plotter.plot(frames[0], path.splitext(filename)[0] + "_frame.pdf",
-                 title="Frame",
+                 title="Frame 0 - " + filename,
                  xlabel="Time [ms]")
     return frames, samplerate

@@ -13,10 +13,16 @@ class AudioProcessor:
         self.on_frames, self.on_sr = iss.input.load_file("maskon_tone.wav", 50)
 
     def process_signals(self):
-        wf = operations.center_clip_frame(self.on_frames[0])
+        the_chosen_one = self.on_frames[0]
+        plotter.plot(the_chosen_one, "frame.pdf",
+                     title="Frame",
+                     xlabel="Time [ms]")
+
+        wf = operations.center_clip_frame(the_chosen_one)
         plotter.plot(wf, "frame_clipped.pdf",
                      title="70% Center clipping",
                      xlabel="Samples")
+
         wf = operations.autocorrelate_frame(wf, 0)
         plotter.plot(wf, "frame_autocorrelated.pdf",
                      title="Autocorrelation",

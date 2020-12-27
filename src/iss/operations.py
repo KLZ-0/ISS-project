@@ -5,7 +5,7 @@ from iss.res import CORRELATION_FREQ_MARGIN
 
 def center_clip_frame(frame):
     cliplim = abs(max(frame.min(), frame.max(), key=abs))
-    return np.asarray([1.0 if sample > 0.7 * cliplim else -1.0 if sample < -0.7 * cliplim else 0.0 for sample in frame])
+    return np.asarray([1 if sample > 0.7 * cliplim else -1 if sample < -0.7 * cliplim else 0 for sample in frame])
 
 
 def autocorrelate_frame(frame, correl_margin):
@@ -15,7 +15,7 @@ def autocorrelate_frame(frame, correl_margin):
         f1 = frame[k:]
         f2 = frame[:len(frame) - k]
 
-        rs.append(np.sum(f1.dot(f2)))
+        rs.append(f1.dot(f2))
 
     return np.asarray(rs)
 
@@ -25,7 +25,8 @@ def frames_to_base_frequency(frames, samplerate):
     corr_margin = samplerate / CORRELATION_FREQ_MARGIN
 
     for frame in frames:
-        lag = np.argmax(autocorrelate_frame(frame, corr_margin)) + corr_margin
+        wf = center_clip_frame(frame)
+        lag = np.argmax(autocorrelate_frame(wf, corr_margin)) + corr_margin
         freqs.append(samplerate / lag)
 
     return np.asarray(freqs)
