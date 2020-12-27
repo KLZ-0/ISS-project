@@ -12,7 +12,7 @@ def setup_environment():
     # TODO: Probably make this version independent
     if not rv >= PYTHON_MIN_VERSION:
         print("Minimal required Python version is 3.5"
-              f"\nYou are running {sys.version_info.major}.{sys.version_info.minor}")
+              f"\nYou are running {sys.version_info.major}.{sys.version_info.minor}", file=sys.stderr)
         sys.exit(1)
 
     Path("outputs").mkdir(parents=True, exist_ok=True)

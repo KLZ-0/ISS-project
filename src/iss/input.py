@@ -21,7 +21,9 @@ def load_data(filename, delay):
     data /= np.abs(data).max()
 
     # plot
-    plotter.plot(data, path.splitext(filename)[0] + ".pdf")
+    plotter.plot(data, path.splitext(filename)[0] + ".pdf",
+                 title="Signal",
+                 xlabel="Time [ms]")
 
     return data, samplerate
 
@@ -42,5 +44,7 @@ def load_frames(filename, delay):
 
 def load_file(filename, delay=0):
     frames, samplerate = load_frames(filename, delay)
-    plotter.plot(frames[0], path.splitext(filename)[0] + "_frame.pdf")
+    plotter.plot(frames[0], path.splitext(filename)[0] + "_frame.pdf",
+                 title="Frame",
+                 xlabel="Time [ms]")
     return frames, samplerate
