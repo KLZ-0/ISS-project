@@ -11,10 +11,15 @@ class AudioProcessor:
     on_frames = None
 
     def __init__(self):
+        # task 1, 2, 3
         self.off_frames, self.off_sr = iss.input.load_file("maskoff_tone.wav")
         self.on_frames, self.on_sr = iss.input.load_file("maskon_tone.wav", 50)
 
     def process_signals(self):
+        self.task4()
+        self.task5()
+
+    def task4(self):
         the_chosen_one = self.on_frames[0]
         plotter.plot(the_chosen_one, "frame.pdf",
                      figsize=(16, 3),
@@ -45,3 +50,14 @@ class AudioProcessor:
 
         print("OFF", "\n- Mean:\t\t", np.mean(freqs_off), "\n- Variance:\t", np.var(freqs_off))
         print("ON", "\n- Mean:\t\t", np.mean(freqs_on), "\n- Variance:\t", np.var(freqs_on))
+
+    def task5(self):
+        fft_data = operations.spectrum(self.off_frames)
+        fft_data = 10 * np.log10(fft_data + 1e-20)
+
+        plotter.img(fft_data.T, "spectrum_maskoff.pdf", title="Spectrogram - mask off")
+
+        fft_data = operations.spectrum(self.on_frames)
+        fft_data = 10 * np.log10(fft_data + 1e-20)
+
+        plotter.img(fft_data.T, "spectrum_maskon.pdf", title="Spectrogram - mask on")

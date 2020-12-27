@@ -76,3 +76,21 @@ def plot_list(datalist, filename, figsize=(8, 4), title="Title", xlabel="x", yla
         plt.legend()
 
     plt.savefig(path.join("outputs", filename))
+
+
+def img(data, filename, figsize=(16, 6), title="Title"):
+    # plt.imsave(path.join("outputs", "test.png"), data)
+    plt.figure(figsize=figsize)
+    plt.imshow(data,
+               aspect="auto",
+               extent=[0, 1, 0, 8000],
+               origin="lower")
+
+    plt.gca().set_xlabel("Time [s]")
+    plt.gca().set_ylabel("Frequency [Hz]")
+
+    plt.gca().set_title(title)
+
+    plt.colorbar()
+
+    plt.savefig(path.join("outputs", filename))
