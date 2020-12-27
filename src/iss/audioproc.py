@@ -31,7 +31,8 @@ class AudioProcessor:
         plotter.plot(wf, "frame_autocorrelated.pdf",
                      figsize=(16, 3),
                      title="Autocorrelation",
-                     xlabel="Samples")
+                     xlabel="Samples",
+                     correl_samplerate=self.on_sr)
 
         freqs_off = operations.frames_to_base_frequency(self.off_frames, self.off_sr)
         freqs_on = operations.frames_to_base_frequency(self.on_frames, self.on_sr)

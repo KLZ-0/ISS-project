@@ -1,6 +1,6 @@
 import numpy as np
 
-from iss.res import CORRELATION_FREQ_MARGIN
+from iss.res import CORREL_FREQ_MARGIN
 
 
 def center_clip_frame(frame):
@@ -22,7 +22,7 @@ def autocorrelate_frame(frame, correl_margin):
 
 def frames_to_base_frequency(frames, samplerate):
     freqs = []
-    corr_margin = samplerate / CORRELATION_FREQ_MARGIN
+    corr_margin = samplerate / CORREL_FREQ_MARGIN
 
     for frame in frames:
         wf = center_clip_frame(frame)

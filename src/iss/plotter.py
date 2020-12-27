@@ -4,6 +4,8 @@ from os import path
 import numpy as np
 from matplotlib import pyplot as plt
 
+from iss.res import CORREL_FREQ_MARGIN
+
 
 def debug(data):
     time = np.linspace(0., len(data), data.shape[0])
@@ -17,7 +19,7 @@ def debug(data):
     plt.savefig(path.join("outputs", "test.pdf"))
 
 
-def plot(data, filename, figsize=(8, 4), title="Title", xlabel="x", ylabel="y", plot_label=None):
+def plot(data, filename, figsize=(8, 4), title="Title", xlabel="x", ylabel="y", plot_label=None, correl_samplerate=0):
     time = np.linspace(0., len(data) - 1, data.shape[0])
     # time = np.arange(0, len(data), 1)
     plt.figure(figsize=figsize)
@@ -37,6 +39,12 @@ def plot(data, filename, figsize=(8, 4), title="Title", xlabel="x", ylabel="y", 
 
     if plot_label:
         plt.legend()
+
+    if correl_samplerate != 0:
+        cutoff = int(correl_samplerate / CORREL_FREQ_MARGIN)
+        target_dt = data[cutoff:]
+        plt.axvline(x=cutoff, color="black")
+        plt.stem([target_dt.argmax() + cutoff], [target_dt.max()], linefmt="r")
 
     plt.savefig(path.join("outputs", filename))
 
