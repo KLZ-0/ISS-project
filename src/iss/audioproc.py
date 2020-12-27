@@ -12,8 +12,6 @@ class AudioProcessor:
         self.off_frames, self.off_sr = iss.input.load_file("maskoff_tone.wav")
         self.on_frames, self.on_sr = iss.input.load_file("maskon_tone.wav", 50)
 
-        self.shit, self.shit_sr = iss.input.load_file("hf.wav")
-
     def process_signals(self):
         wf = operations.center_clip_frame(self.on_frames[0])
         plotter.plot(wf, "frame_clipped.pdf",
