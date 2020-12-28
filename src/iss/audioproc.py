@@ -80,8 +80,10 @@ class AudioProcessor:
                     title="Spectrogram - mask on")
 
     def task6(self):
-        freq_characteristic_frames = self.fft_on / self.fft_off
-        self.freq_response = np.mean(freq_characteristic_frames, axis=0)
+        t_on = np.mean(np.abs(self.fft_on), axis=0)
+        t_off = np.mean(np.abs(self.fft_off), axis=0)
+        self.freq_response = t_on / t_off
+
         plotter.plot(operations.logarithmize_spectrum(self.freq_response), "6_frequency_response.pdf",
                      figsize=(16, 3),
                      title="Frequency response",
@@ -90,7 +92,7 @@ class AudioProcessor:
 
     def task7(self):
         self.impulse_response = operations.impulse_response(self.freq_response)
-        plotter.plot(self.impulse_response, "7_impulse_response.pdf",
+        plotter.plot(np.abs(self.impulse_response), "7_impulse_response.pdf",
                      figsize=(16, 3),
                      title="Impulse response",
                      xlabel="Time [s]",
@@ -105,11 +107,11 @@ class AudioProcessor:
                      title="Original signal (maskon)",
                      xlabel="Time [s]")
 
-        dt = operations.apply_filter(self.off_sentence, self.impulse_response)
+        dt = operations.apply_filter(self.off_sentence, self.impulse_response.real)
         plotter.plot(dt, "8_signal_filtered.pdf",
                      title="Filtered signal (maskoff + filter)",
                      xlabel="Time [s]")
         iss.io.save_file("sim_maskon_sentence.wav", dt, self.off_sentence_sr)
 
-        dt = operations.apply_filter(self.off_tone, self.impulse_response)
+        dt = operations.apply_filter(self.off_tone, self.impulse_response.real)
         iss.io.save_file("sim_maskon_tone.wav", dt, self.off_tone_sr)
