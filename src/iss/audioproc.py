@@ -16,8 +16,15 @@ class AudioProcessor:
         self.on_frames, self.on_sr = iss.input.load_file("maskon_tone.wav", 50)
 
     def process_signals(self):
+        self.task3()
         self.task4()
         self.task5()
+
+    def task3(self):
+        plotter.plot_list([self.off_frames[0], self.on_frames[0]], "frames.pdf",
+                          title="Frame",
+                          xlabel="Time [ms]",
+                          plot_labels=["Mask off", "Mask on"])
 
     def task4(self):
         the_chosen_one = self.on_frames[0]
