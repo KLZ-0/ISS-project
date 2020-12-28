@@ -1,5 +1,5 @@
 import numpy as np
-from numpy.fft import fft
+from numpy.fft import fft, ifft
 
 from iss.res import CORREL_FREQ_MARGIN
 
@@ -33,9 +33,13 @@ def frames_to_base_frequency(frames, samplerate):
     return np.asarray(freqs)
 
 
-def spectrum(frames):
-    return np.abs(fft(frames, 1024)[:, :512]) ** 2
+def fft_spectrum(frames):
+    return fft(frames, 1024)[:, :512]
 
 
 def logarithmize_spectrum(fft_frames):
-    return 10 * np.log10(fft_frames + 1e-20)
+    return 10 * np.log10((np.abs(fft_frames) ** 2) + 1e-20)
+
+
+def impulse_response(frequency_response):
+    return np.abs(ifft(frequency_response))

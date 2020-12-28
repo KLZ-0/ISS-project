@@ -15,6 +15,12 @@ class AudioProcessor:
     fft_on = None
     fft_off = None
 
+    # set in task 6
+    freq_response = None
+
+    # set in task 7
+    impulse_response = None
+
     def __init__(self):
         # task 1, 2, 3
         self.off_frames, self.off_sr = iss.input.load_file("maskoff_tone.wav")
@@ -24,6 +30,8 @@ class AudioProcessor:
         self.task3()
         self.task4()
         self.task5()
+        self.task6()
+        self.task7()
 
     def task3(self):
         plotter.plot_list([self.off_frames[0], self.on_frames[0]], "3_frames.pdf",
@@ -64,11 +72,28 @@ class AudioProcessor:
         print("4 ON", "\n- Mean:\t\t", np.mean(freqs_on), "\n- Variance:\t", np.var(freqs_on))
 
     def task5(self):
-        self.fft_off = operations.spectrum(self.off_frames)
+        self.fft_off = operations.fft_spectrum(self.off_frames)
         plotter.img(operations.logarithmize_spectrum(self.fft_off).T, "5_spectrum_maskoff.pdf",
                     title="Spectrogram - mask off")
 
-        self.fft_on = operations.spectrum(self.on_frames)
+        self.fft_on = operations.fft_spectrum(self.on_frames)
         plotter.img(operations.logarithmize_spectrum(self.fft_on).T, "5_spectrum_maskon.pdf",
                     title="Spectrogram - mask on")
 
+    def task6(self):
+        freq_characteristic_frames = self.fft_on / self.fft_off
+        # use one of these
+        self.freq_response = np.mean(freq_characteristic_frames, axis=0)
+        plotter.plot(operations.logarithmize_spectrum(self.freq_response), "6_frequency_response.pdf",
+                     figsize=(16, 3),
+                     title="Frequency response",
+                     xlabel="Frequency [Hz]",
+                     ylabel="Gain [dB]")
+
+    def task7(self):
+        self.impulse_response = operations.impulse_response(self.freq_response)
+        plotter.plot(self.impulse_response, "7_impulse_response.pdf",
+                     figsize=(16, 3),
+                     title="Impulse response",
+                     xlabel="Time [s]",
+                     ylabel="Amplitude")

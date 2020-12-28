@@ -16,7 +16,7 @@ def debug(data):
     plt.gca().set_title('Signal')
     plt.tight_layout()
 
-    plt.savefig(path.join("outputs", "test.pdf"))
+    plt.savefig(path.join("outputs", "test.png"))
 
 
 def plot(data, filename, figsize=(8, 4), title="Title", xlabel="x", ylabel="y", plot_label=None, correl_samplerate=0):
