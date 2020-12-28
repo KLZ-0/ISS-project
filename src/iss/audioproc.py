@@ -1,16 +1,10 @@
 import numpy as np
 
-import iss.input
+import iss.io
 from iss import plotter, operations
 
 
 class AudioProcessor:
-    # set in __init__
-    off_sr = 0
-    on_sr = 0
-    off_frames = None
-    on_frames = None
-
     # set in task5
     fft_on = None
     fft_off = None
@@ -23,8 +17,11 @@ class AudioProcessor:
 
     def __init__(self):
         # task 1, 2, 3
-        self.off_frames, self.off_sr = iss.input.load_file("maskoff_tone.wav")
-        self.on_frames, self.on_sr = iss.input.load_file("maskon_tone.wav", 50)
+        self.off_frames, self.off_sr = iss.io.load_file_as_frames("maskoff_tone.wav")
+        self.on_frames, self.on_sr = iss.io.load_file_as_frames("maskon_tone.wav", 50)
+
+        self.off_sentence, self.off_sentence_sr = iss.io.load_file_as_signal("maskoff_sentence.wav")
+        self.on_sentence, self.on_sentence_sr = iss.io.load_file_as_signal("maskon_sentence.wav")
 
     def process_signals(self):
         self.task3()
@@ -32,6 +29,7 @@ class AudioProcessor:
         self.task5()
         self.task6()
         self.task7()
+        self.task8()
 
     def task3(self):
         plotter.plot_list([self.off_frames[0], self.on_frames[0]], "3_frames.pdf",
@@ -82,7 +80,6 @@ class AudioProcessor:
 
     def task6(self):
         freq_characteristic_frames = self.fft_on / self.fft_off
-        # use one of these
         self.freq_response = np.mean(freq_characteristic_frames, axis=0)
         plotter.plot(operations.logarithmize_spectrum(self.freq_response), "6_frequency_response.pdf",
                      figsize=(16, 3),
@@ -97,3 +94,19 @@ class AudioProcessor:
                      title="Impulse response",
                      xlabel="Time [s]",
                      ylabel="Amplitude")
+
+    def task8(self):
+        plotter.plot(self.off_sentence, "8_signal_maskoff.pdf",
+                     title="Original signal (maskoff)",
+                     xlabel="Time [s]")
+
+        plotter.plot(self.on_sentence, "8_signal_maskon.pdf",
+                     title="Original signal (maskon)",
+                     xlabel="Time [s]")
+
+        dt = operations.apply_filter(self.off_sentence, self.impulse_response)
+        plotter.plot(dt, "8_signal_filtered.pdf",
+                     title="Filtered signal (maskoff + filter)",
+                     xlabel="Time [s]")
+
+        iss.io.save_file("sim_maskon_sentence.wav", dt, self.off_sentence_sr)

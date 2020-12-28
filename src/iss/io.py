@@ -42,6 +42,13 @@ def load_frames(filename, delay):
     return frames, samplerate
 
 
-def load_file(filename, delay=0):
-    frames, samplerate = load_frames(filename, delay)
-    return frames, samplerate
+def load_file_as_frames(filename, delay=0):
+    return load_frames(filename, delay)
+
+
+def load_file_as_signal(filename):
+    return soundfile.read(path.join(audiopath, filename))
+
+
+def save_file(filename, data, samplerate):
+    soundfile.write(path.join(audiopath, filename), data, samplerate)

@@ -1,5 +1,6 @@
 import numpy as np
 from numpy.fft import fft, ifft
+from scipy.signal import lfilter
 
 from iss.res import CORREL_FREQ_MARGIN
 
@@ -43,3 +44,7 @@ def logarithmize_spectrum(fft_frames):
 
 def impulse_response(frequency_response):
     return np.abs(ifft(frequency_response))
+
+
+def apply_filter(data, flt):
+    return lfilter(a=[1], b=flt, x=data)
