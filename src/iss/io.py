@@ -3,7 +3,6 @@ from os import path
 import numpy as np
 import soundfile
 
-from iss import plotter
 from iss.res import audiopath, frame_size
 
 
@@ -21,9 +20,9 @@ def load_data(filename, delay):
     data /= np.abs(data).max()
 
     # plot
-    plotter.plot(data, "1_" + path.splitext(filename)[0] + ".pdf",
-                 title="Signal",
-                 xlabel="Time [ms]")
+    # plotter.plot(data, "1_" + path.splitext(filename)[0] + ".pdf",
+    #              title="Signal",
+    #              xlabel="Time [ms]")
 
     return data, samplerate
 
