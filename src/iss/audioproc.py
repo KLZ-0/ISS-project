@@ -5,10 +5,15 @@ from iss import plotter, operations
 
 
 class AudioProcessor:
+    # set in __init__
     off_sr = 0
     on_sr = 0
     off_frames = None
     on_frames = None
+
+    # set in task5
+    fft_on = None
+    fft_off = None
 
     def __init__(self):
         # task 1, 2, 3
@@ -21,26 +26,26 @@ class AudioProcessor:
         self.task5()
 
     def task3(self):
-        plotter.plot_list([self.off_frames[0], self.on_frames[0]], "frames.pdf",
+        plotter.plot_list([self.off_frames[0], self.on_frames[0]], "3_frames.pdf",
                           title="Frame",
                           xlabel="Time [ms]",
                           plot_labels=["Mask off", "Mask on"])
 
     def task4(self):
         the_chosen_one = self.on_frames[0]
-        plotter.plot(the_chosen_one, "frame.pdf",
+        plotter.plot(the_chosen_one, "4_frame.pdf",
                      figsize=(16, 3),
                      title="Frame",
                      xlabel="Time [ms]")
 
         wf = operations.center_clip_frame(the_chosen_one)
-        plotter.plot(wf, "frame_clipped.pdf",
+        plotter.plot(wf, "4_frame_clipped.pdf",
                      figsize=(16, 3),
                      title="70% Center clipping",
                      xlabel="Samples")
 
         wf = operations.autocorrelate_frame(wf, 0)
-        plotter.plot(wf, "frame_autocorrelated.pdf",
+        plotter.plot(wf, "4_frame_autocorrelated.pdf",
                      figsize=(16, 3),
                      title="Autocorrelation",
                      xlabel="Samples",
@@ -48,19 +53,22 @@ class AudioProcessor:
 
         freqs_off = operations.frames_to_base_frequency(self.off_frames, self.off_sr)
         freqs_on = operations.frames_to_base_frequency(self.on_frames, self.on_sr)
-        plotter.plot_list([freqs_off, freqs_on], "base_frequencies.pdf",
+        plotter.plot_list([freqs_off, freqs_on], "4_base_frequencies.pdf",
                           figsize=(16, 3),
                           title="Frame base frequencies",
                           xlabel="Frames",
                           ylabel="$f0$ [Hz]",
                           plot_labels=["Mask off", "Mask on"])
 
-        print("OFF", "\n- Mean:\t\t", np.mean(freqs_off), "\n- Variance:\t", np.var(freqs_off))
-        print("ON", "\n- Mean:\t\t", np.mean(freqs_on), "\n- Variance:\t", np.var(freqs_on))
+        print("4 OFF", "\n- Mean:\t\t", np.mean(freqs_off), "\n- Variance:\t", np.var(freqs_off))
+        print("4 ON", "\n- Mean:\t\t", np.mean(freqs_on), "\n- Variance:\t", np.var(freqs_on))
 
     def task5(self):
-        fft_data = operations.logarithmic_spectrum(self.off_frames)
-        plotter.img(fft_data.T, "spectrum_maskoff.pdf", title="Spectrogram - mask off")
+        self.fft_off = operations.spectrum(self.off_frames)
+        plotter.img(operations.logarithmize_spectrum(self.fft_off).T, "5_spectrum_maskoff.pdf",
+                    title="Spectrogram - mask off")
 
-        fft_data = operations.logarithmic_spectrum(self.on_frames)
-        plotter.img(fft_data.T, "spectrum_maskon.pdf", title="Spectrogram - mask on")
+        self.fft_on = operations.spectrum(self.on_frames)
+        plotter.img(operations.logarithmize_spectrum(self.fft_on).T, "5_spectrum_maskon.pdf",
+                    title="Spectrogram - mask on")
+

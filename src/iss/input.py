@@ -21,7 +21,7 @@ def load_data(filename, delay):
     data /= np.abs(data).max()
 
     # plot
-    plotter.plot(data, path.splitext(filename)[0] + ".pdf",
+    plotter.plot(data, "1_" + path.splitext(filename)[0] + ".pdf",
                  title="Signal",
                  xlabel="Time [ms]")
 

@@ -34,8 +34,8 @@ def frames_to_base_frequency(frames, samplerate):
 
 
 def spectrum(frames):
-    return np.asarray([np.abs(fft(frame, 1024)[:512]) ** 2 for frame in frames])
+    return np.abs(fft(frames, 1024)[:, :512]) ** 2
 
 
-def logarithmic_spectrum(frames):
-    return 10 * np.log10(spectrum(frames) + 1e-20)
+def logarithmize_spectrum(fft_frames):
+    return 10 * np.log10(fft_frames + 1e-20)
