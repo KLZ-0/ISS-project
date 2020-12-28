@@ -20,6 +20,7 @@ class AudioProcessor:
         self.off_frames, self.off_sr = iss.io.load_file_as_frames("maskoff_tone.wav")
         self.on_frames, self.on_sr = iss.io.load_file_as_frames("maskon_tone.wav", 50)
 
+        self.off_tone, self.off_tone_sr = iss.io.load_file_as_signal("maskoff_tone.wav")
         self.off_sentence, self.off_sentence_sr = iss.io.load_file_as_signal("maskoff_sentence.wav")
         self.on_sentence, self.on_sentence_sr = iss.io.load_file_as_signal("maskon_sentence.wav")
 
@@ -108,5 +109,7 @@ class AudioProcessor:
         plotter.plot(dt, "8_signal_filtered.pdf",
                      title="Filtered signal (maskoff + filter)",
                      xlabel="Time [s]")
-
         iss.io.save_file("sim_maskon_sentence.wav", dt, self.off_sentence_sr)
+
+        dt = operations.apply_filter(self.off_tone, self.impulse_response)
+        iss.io.save_file("sim_maskon_tone.wav", dt, self.off_tone_sr)
