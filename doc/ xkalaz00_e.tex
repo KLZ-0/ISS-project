@@ -1,0 +1,115 @@
+\documentclass[a4paper, 11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\RequirePackage[left=2cm,text={17cm, 24cm},top=3cm]{geometry}
+\usepackage{times}
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+
+% for indented itemize list
+\usepackage{enumitem}
+
+\graphicspath{{../src/outputs/}}
+
+\begin{document}
+
+	% header
+	\begin{center}
+	{\includegraphics[width=0.4\linewidth]{fig/logo_en.png}}
+		\\
+		[0.4cm]
+
+		{\LARGE
+		ISS - Project \\
+		[0.4cm]
+		}
+
+		{\large
+		Adrián Kálazi (xkalaz00) \\
+		\today
+		}
+	\end{center}
+
+	% actual content
+	\section*{Solution}
+
+	The calculations were implemented using \textbf{Python (3.5+)} with the following libraries:
+
+	\begin{itemize}
+		\item numpy - arrays, \texttt{fft}, \texttt{ifft}
+		\item scipy - \texttt{lfilter}
+		\item soundfile - wav reading/writing
+		\item matplotlib - plotting
+	\end{itemize}
+
+	The implementation consists of a Python module and a launcher script (\texttt{main.py}).
+
+	The script can be run by executing \texttt{python3 ./main.py} in the \texttt{src/} folder.
+
+	\begin{enumerate}
+		\item
+		The audio was recorded with \texttt{\href{https://apps.kde.org/en/kwave}{KWave}} in 16-bit resolution at 48~kHz.
+
+		The sampling rate was later scaled down to 16~kHz using \texttt{ffmpeg}
+
+		Durations of recorded signals: \\
+		\begin{tabular}{ | l | l | l | }
+			\hline
+			\textbf{File} & \textbf{Samples} & \textbf{Seconds} \\ \hline
+			maskoff\_tone.wav & 24806            & 1.55             \\ \hline
+			maskon\_tone.wav  & 17137            & 1.07             \\ \hline
+		\end{tabular}
+
+		\item
+		The sentence recording process was the same as above
+
+		Durations of recorded signals: \\
+		\begin{tabular}{ | l | l | l | }
+			\hline
+			\textbf{File}     & \textbf{Samples} & \textbf{Seconds} \\ \hline
+			maskoff\_sentence.wav & 41162            & 2.57             \\ \hline
+			maskon\_sentence.wav  & 43312            & 2.71             \\ \hline
+		\end{tabular}
+
+		\item
+		Frame duration $t_F = 20\,ms$ \\
+		Sampling frequency $F_s = 16\,kHz$
+
+		Frame size in samples: $n_F = t_F \times F_s = 20~ms \times 16~kHz = 320~samples$
+
+		\includegraphics[width=\linewidth]{3_frames.pdf}
+
+		\item
+		Variance and mean of base frequencies: \\
+		\begin{tabular}{ | l | l | l | }
+			\hline
+			\textbf{Signal}   & \textbf{Mean} & \textbf{Variance} \\ \hline
+			maskoff\_sentence.wav & 139.466       & 0.803             \\ \hline
+			maskon\_sentence.wav  & 143.478       & 1.883             \\ \hline
+		\end{tabular}
+
+		\includegraphics[width=\linewidth]{4_frame.pdf} \\
+		\includegraphics[width=\linewidth]{4_frame_clipped.pdf} \\
+		\includegraphics[width=\linewidth]{4_frame_autocorrelated.pdf} \\
+		\includegraphics[width=\linewidth]{4_base_frequencies.pdf}
+
+%			The mentioned problem can be solved by
+		There are two solutions for the mentioned problem that come to my mind:
+		\begin{enumerate}
+			\item
+			Autocorrelation with higher resolution - this would eliminate the rapid changes in $f_0$
+			but would require a longer computation time.
+			\item
+			In our solution, lag was defined as \texttt{np.argmax(autocorrelation\_array)} and therefore it was an integer.
+
+			An alternate solution would be to approximate lag as a weighted arithmetic mean from the surrounding indices and their values
+			which would make it a floating point number resulting in better precision.
+			This method would eliminate rapid changes of $f_0$ in most cases.
+
+			Compared to (a) this would be faster to compute but result in worse precision.
+		\end{enumerate}
+	\end{enumerate}
+
+\end{document}
