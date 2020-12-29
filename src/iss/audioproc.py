@@ -58,7 +58,7 @@ class AudioProcessor:
         freqs_off = operations.frames_to_base_frequency(self.off_frames, self.off_sr)
         freqs_on = operations.frames_to_base_frequency(self.on_frames, self.on_sr)
         plotter.plot_list([freqs_off, freqs_on], "4_base_frequencies.pdf",
-                          title="Frame base frequencies",
+                          title="Base frequency per frame",
                           xlabel="Frames",
                           ylabel="$f0$ [Hz]",
                           plot_labels=["Mask off", "Mask on"])
