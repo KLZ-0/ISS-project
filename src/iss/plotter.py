@@ -4,12 +4,12 @@ from os import path
 import numpy as np
 from matplotlib import pyplot as plt
 
-from iss.res import CORREL_FREQ_MARGIN
+from iss.res import CORREL_FREQ_MARGIN, FIG_SIZE
 
 
 def debug(data):
     time = np.linspace(0., len(data), data.shape[0])
-    plt.figure(figsize=(8, 4))
+    plt.figure(figsize=FIG_SIZE)
     plt.plot(time, data)
 
     plt.gca().set_xlabel('$t[ms]$')
@@ -19,7 +19,7 @@ def debug(data):
     plt.savefig(path.join("outputs", "test.png"))
 
 
-def plot(data, filename, figsize=(8, 4), title="Title", xlabel="x", ylabel="y", plot_label=None, correl_samplerate=0):
+def plot(data, filename, figsize=FIG_SIZE, title="Title", xlabel="x", ylabel="y", plot_label=None, correl_samplerate=0):
     time = np.linspace(0., len(data) - 1, data.shape[0])
     # time = np.arange(0, len(data), 1)
     plt.figure(figsize=figsize)
@@ -49,7 +49,7 @@ def plot(data, filename, figsize=(8, 4), title="Title", xlabel="x", ylabel="y", 
     plt.savefig(path.join("outputs", filename))
 
 
-def plot_list(datalist, filename, figsize=(8, 4), title="Title", xlabel="x", ylabel="y", plot_labels=None):
+def plot_list(datalist, filename, figsize=FIG_SIZE, title="Title", xlabel="x", ylabel="y", plot_labels=None):
     if plot_labels and len(plot_labels) != len(datalist):
         print("Data list size does not match label list size, wtf?", file=sys.stderr)
         return

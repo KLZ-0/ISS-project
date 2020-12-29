@@ -41,19 +41,16 @@ class AudioProcessor:
     def task4(self):
         the_chosen_one = self.on_frames[0]
         plotter.plot(the_chosen_one, "4_frame.pdf",
-                     figsize=(10, 3),
                      title="Frame",
                      xlabel="Time [ms]")
 
         wf = operations.center_clip_frame(the_chosen_one)
         plotter.plot(wf, "4_frame_clipped.pdf",
-                     figsize=(10, 3),
                      title="70% Center clipping",
                      xlabel="Samples")
 
         wf = operations.autocorrelate_frame(wf, 0)
         plotter.plot(wf, "4_frame_autocorrelated.pdf",
-                     figsize=(10, 3),
                      title="Autocorrelation",
                      xlabel="Samples",
                      correl_samplerate=self.on_sr)
@@ -61,7 +58,6 @@ class AudioProcessor:
         freqs_off = operations.frames_to_base_frequency(self.off_frames, self.off_sr)
         freqs_on = operations.frames_to_base_frequency(self.on_frames, self.on_sr)
         plotter.plot_list([freqs_off, freqs_on], "4_base_frequencies.pdf",
-                          figsize=(10, 3),
                           title="Frame base frequencies",
                           xlabel="Frames",
                           ylabel="$f0$ [Hz]",
@@ -85,7 +81,6 @@ class AudioProcessor:
         self.freq_response = t_on / (t_off + 1e-20)
 
         plotter.plot(operations.logarithmize_spectrum(self.freq_response), "6_frequency_response.pdf",
-                     figsize=(10, 3),
                      title="Frequency response",
                      xlabel="Frequency [Hz]",
                      ylabel="Gain [dB]")
@@ -93,7 +88,6 @@ class AudioProcessor:
     def task7(self):
         self.impulse_response = operations.impulse_response(self.freq_response)
         plotter.plot(np.abs(self.impulse_response), "7_impulse_response.pdf",
-                     figsize=(10, 3),
                      title="Impulse response",
                      xlabel="Time [s]",
                      ylabel="Amplitude")
