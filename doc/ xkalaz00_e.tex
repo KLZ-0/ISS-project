@@ -85,7 +85,7 @@
 		Variance and mean of base frequencies: \\
 		\begin{tabular}{ | l | l | l | }
 			\hline
-			\textbf{Signal}   & \textbf{Mean} & \textbf{Variance} \\ \hline
+			\textbf{Signal}    & \textbf{Mean} & \textbf{Variance} \\ \hline
 			maskoff\_sentence.wav & 139.466       & 0.803             \\ \hline
 			maskon\_sentence.wav  & 143.478       & 1.883             \\ \hline
 		\end{tabular}
@@ -95,21 +95,13 @@
 		\includegraphics[width=\linewidth]{4_frame_autocorrelated.pdf} \\
 		\includegraphics[width=\linewidth]{4_base_frequencies.pdf}
 
-%			The mentioned problem can be solved by
-		There are two solutions for the mentioned problem that come to my mind:
-		\begin{enumerate}
-			\item
-			Autocorrelation with higher resolution - this would eliminate the rapid changes in $f_0$
-			but would require a longer computation time.
-			\item
-			In our solution, lag was defined as \texttt{np.argmax(autocorrelation\_array)} and therefore it was an integer.
+		A possible solution to the mentioned problem:
 
-			An alternate solution would be to approximate lag as a weighted arithmetic mean from the surrounding indices and their values
-			which would make it a floating point number resulting in better precision.
-			This method would eliminate rapid changes of $f_0$ in most cases.
+		In our implementation, lag was defined as \texttt{np.argmax(autocorrelation\_array)} and therefore it was an integer.
 
-			Compared to (a) this would be faster to compute but result in worse precision.
-		\end{enumerate}
+		An alternate implementation would be to approximate lag as a weighted arithmetic mean from the surrounding indices and their values
+		which would make it a floating point number resulting in better precision.
+		This method would eliminate rapid changes of $f_0$ in most cases.
 	\end{enumerate}
 
 \end{document}
