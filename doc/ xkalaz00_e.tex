@@ -33,7 +33,7 @@
 	\end{center}
 
 	% actual content
-	\section*{Solution}
+	\section*{Abstract}
 
 	The calculations were implemented using \textbf{Python (3.5+)} with the following libraries:
 
@@ -46,7 +46,17 @@
 
 	The implementation consists of a Python module and a launcher script (\texttt{main.py}).
 
-	The script can be run by executing \texttt{python3 ./main.py} in the \texttt{src/} folder.
+	Running the script:
+	\begin{itemize}
+		\item
+		On a system without the required libraries - execute \texttt{./run-venv.sh} in the \texttt{src/} folder.
+
+		This will setup a virtual environment, install the requirements and run the script.
+		\item
+		On a system with the required libraries - execute \texttt{python3 ./main.py} in the \texttt{src/} folder.
+	\end{itemize}
+
+	\section*{Solution}
 
 	\begin{enumerate}
 		\item
@@ -102,6 +112,14 @@
 		An alternate implementation would be to approximate lag as a weighted arithmetic mean from the surrounding indices and their values
 		which would make it a floating point number resulting in better precision.
 		This method would eliminate rapid changes of $f_0$ in most cases.
+
+		\newpage
+
+		\item
+		Spectrograms
+
+		\includegraphics[width=\linewidth]{5_spectrum_maskoff.pdf} \\
+		\includegraphics[width=\linewidth]{5_spectrum_maskon.pdf}
 	\end{enumerate}
 
 \end{document}
