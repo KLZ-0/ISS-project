@@ -2,7 +2,7 @@ import sys
 
 import numpy as np
 from numpy.fft import fft, ifft
-from scipy.signal import lfilter
+from scipy.signal import lfilter, get_window
 
 from iss.res import CORREL_FREQ_MARGIN, ALIGN_MIN_FREQ, ALIGNED_FRAME_DURATION
 
@@ -86,3 +86,11 @@ def align_frames(frames1, frames2, samplerate, min_corr_margin=3):
         shifts.append(delta if dt1 < dt2 else -delta)
 
     return np.asarray(shifts)
+
+
+def window_frames(frames):
+    window = get_window("hann", frames[0].shape[-1])
+    fft_res = fft(window, 1024) / (len(window) / 2.0)
+    response = np.abs(fft_res / abs(fft_res).max())[:512]
+
+    return [frame * window for frame in frames], window, response

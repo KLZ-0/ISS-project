@@ -7,7 +7,13 @@ from iss import plotter, operations
 
 
 class AudioProcessor:
-    first_run = True
+    run_n = 0
+
+    # initialized but reset in certain cases
+    off_frames = None
+    on_frames = None
+    off_sr = 0
+    on_sr = 0
 
     # set in task5
     fft_on = None
@@ -21,31 +27,50 @@ class AudioProcessor:
 
     def __init__(self):
         # task 1, 2, 3
-        self.off_frames, self.off_sr = iss.io.load_file_as_frames("maskoff_tone.wav")
-        self.on_frames, self.on_sr = iss.io.load_file_as_frames("maskon_tone.wav")
+        self.load_frames()
 
         self.off_tone, self.off_tone_sr = iss.io.load_file_as_signal("maskoff_tone.wav")
         self.off_sentence, self.off_sentence_sr = iss.io.load_file_as_signal("maskoff_sentence.wav")
         self.on_sentence, self.on_sentence_sr = iss.io.load_file_as_signal("maskon_sentence.wav")
 
+    def load_frames(self):
+        self.off_frames, self.off_sr = iss.io.load_file_as_frames("maskoff_tone.wav")
+        self.on_frames, self.on_sr = iss.io.load_file_as_frames("maskon_tone.wav")
+
     def process_signals(self):
+        # base tasks
         self.task3()
         self.task4()
         self.task5()
         self.task6()
         self.task7()
         self.task8()
+        plotter.flush()
 
-        self.first_run = False
-
+        # task 15 - phase shift
+        self.run_n = 1
         self.task15()
         self.task5()
         self.task6()
         self.task7()
         self.task15b()
+        plotter.flush()
+
+        # reload the original frames
+        self.load_frames()
+
+        # task 11 - window function + also shifted because it looks better
+        self.run_n = 2
+        self.task15()
+        self.task11()
+        self.task5()
+        self.task6()
+        self.task7()
+        self.task11b()
+        plotter.flush()
 
     def task3(self):
-        if self.first_run:
+        if self.run_n == 0:
             plotter.plot_list([self.off_frames[0], self.on_frames[0]], "3_frames.pdf",
                               title="Frame",
                               xlabel="Time [ms]",
@@ -53,19 +78,19 @@ class AudioProcessor:
 
     def task4(self):
         the_chosen_one = self.on_frames[0]
-        if self.first_run:
+        if self.run_n == 0:
             plotter.plot(the_chosen_one, "4_frame.pdf",
                          title="Frame",
                          xlabel="Time [ms]")
 
         wf = operations.center_clip_frame(the_chosen_one)
-        if self.first_run:
+        if self.run_n == 0:
             plotter.plot(wf, "4_frame_clipped.pdf",
                          title="70% Center clipping",
                          xlabel="Samples")
 
         wf = operations.correlate_frame(wf, wf, 0)
-        if self.first_run:
+        if self.run_n == 0:
             plotter.plot(wf, "4_frame_autocorrelated.pdf",
                          title="Autocorrelation",
                          xlabel="Samples",
@@ -73,7 +98,7 @@ class AudioProcessor:
 
         freqs_off = operations.frames_to_base_frequency(self.off_frames, self.off_sr)
         freqs_on = operations.frames_to_base_frequency(self.on_frames, self.on_sr)
-        if self.first_run:
+        if self.run_n == 0:
             plotter.plot_list([freqs_off, freqs_on], "4_base_frequencies.pdf",
                               title="Base frequency per frame",
                               xlabel="Frames",
@@ -85,12 +110,12 @@ class AudioProcessor:
 
     def task5(self):
         self.fft_off = operations.fft_spectrum(self.off_frames)
-        if self.first_run:
+        if self.run_n == 0:
             plotter.img(operations.logarithmize_spectrum(self.fft_off).T, "5_spectrum_maskoff.pdf",
                         title="Spectrogram - mask off")
 
         self.fft_on = operations.fft_spectrum(self.on_frames)
-        if self.first_run:
+        if self.run_n == 0:
             plotter.img(operations.logarithmize_spectrum(self.fft_on).T, "5_spectrum_maskon.pdf",
                         title="Spectrogram - mask on")
 
@@ -102,7 +127,7 @@ class AudioProcessor:
         t = abs(self.fft_on / self.fft_off)
         self.freq_response = np.mean(t, axis=0)
 
-        if self.first_run:
+        if self.run_n == 0:
             plotter.plot(operations.logarithmize_spectrum(self.freq_response), "6_frequency_response.pdf",
                          title="Frequency response",
                          xlabel="Frequency [Hz]",
@@ -110,7 +135,7 @@ class AudioProcessor:
 
     def task7(self):
         self.impulse_response = operations.impulse_response(self.freq_response)
-        if self.first_run:
+        if self.run_n == 0:
             plotter.plot(np.abs(self.impulse_response), "7_impulse_response.pdf",
                          title="Impulse response",
                          xlabel="Time [s]",
@@ -149,14 +174,49 @@ class AudioProcessor:
         #                    ],
         #                   "debug.pdf", plot_labels=["original", "target", "filtered"])
 
+    def task11(self):
+        plotter.plot_list([self.off_frames[0], self.on_frames[0]], "11_frames_before.pdf",
+                          title="Frames before an applied window function",
+                          xlabel="Time [ms]",
+                          plot_labels=["Mask off", "Mask on"])
+
+        self.off_frames, window, response = operations.window_frames(self.off_frames)
+        self.on_frames, _, _ = operations.window_frames(self.on_frames)
+        plotter.plot(window, "11_window.pdf",
+                     title="Window",
+                     xlabel="Sample",
+                     ylabel="Amplitude")
+
+        plotter.plot(operations.logarithmize_spectrum(response), "11_response.pdf",
+                     title="Window frequency response",
+                     xlabel="Frequency",
+                     ylabel="Magnitude [dB]")
+
+        plotter.plot_list([self.off_frames[0], self.on_frames[0]], "11_frames_after.pdf",
+                          title="Frames after an applied window function",
+                          xlabel="Time [ms]",
+                          plot_labels=["Mask off", "Mask on"])
+
+    def task11b(self):
+        dt = operations.apply_filter(self.off_sentence, self.impulse_response)
+        plotter.plot(dt, "11_signal_filtered.pdf",
+                     title="Filtered signal (maskoff + phase shift + window + filter)",
+                     xlabel="Time [s]")
+        iss.io.save_file("sim_maskon_sentence_window.wav", dt, self.off_sentence_sr)
+
+        dt = operations.apply_filter(self.off_tone, self.impulse_response)
+        iss.io.save_file("sim_maskon_tone_window.wav", dt, self.off_tone_sr)
+
     def task15(self):
         """
         NOTE: This function modifies already set class variables
         """
-        plotter.plot_list([self.off_frames[0], self.on_frames[0]], "15_frames_before.pdf",
-                          title="Frame before alignment",
-                          xlabel="Time [ms]",
-                          plot_labels=["Mask off", "Mask on"])
+
+        if self.run_n == 1:
+            plotter.plot_list([self.off_frames[0], self.on_frames[0]], "15_frames_before.pdf",
+                              title="Frames before alignment",
+                              xlabel="Time [ms]",
+                              plot_labels=["Mask off", "Mask on"])
 
         if self.off_sr != self.on_sr:
             print("Samplerates don't match, wtf?", file=sys.stderr)
@@ -164,15 +224,17 @@ class AudioProcessor:
 
         dt = operations.align_frames(self.off_frames, self.on_frames, samplerate=self.off_sr)
 
-        plotter.plot_list([self.off_frames[0], self.on_frames[0]], "15_frames_after.pdf",
-                          title="Frame after alignment",
-                          xlabel="Time [ms]",
-                          plot_labels=["Mask off", "Mask on"])
+        if self.run_n == 1:
+            plotter.plot_list([self.off_frames[0], self.on_frames[0]], "15_frames_after.pdf",
+                              title="Frames after alignment",
+                              xlabel="Time [ms]",
+                              plot_labels=["Mask off", "Mask on"])
 
-        plotter.plot(dt, "15_shifts.pdf",
-                     title="Phase shift per frame",
-                     xlabel="Frames",
-                     ylabel="Shift [samples]")
+        if self.run_n == 1:
+            plotter.plot(dt, "15_shifts.pdf",
+                         title="Phase shift per frame",
+                         xlabel="Frames",
+                         ylabel="Shift [samples]")
 
     def task15b(self):
         dt = operations.apply_filter(self.off_sentence, self.impulse_response)

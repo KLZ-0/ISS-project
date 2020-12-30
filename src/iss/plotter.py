@@ -93,3 +93,7 @@ def img(data, filename, figsize=(8, 4), title="Title"):
     plt.colorbar(label="Spectral density [dB]")
 
     plt.savefig(path.join("outputs", filename))
+
+
+def flush():
+    plt.close()
