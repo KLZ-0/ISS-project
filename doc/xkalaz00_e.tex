@@ -7,6 +7,8 @@
 \usepackage{setspace}
 \usepackage{hyperref}
 \usepackage{fancyhdr}
+\usepackage[outputdir=build]{minted}
+\usepackage{amsmath}
 
 % for indented itemize list
 \usepackage{enumitem}
@@ -123,6 +125,64 @@
 
 		\includegraphics[width=\linewidth]{5_spectrum_maskoff.pdf} \\
 		\includegraphics[width=\linewidth]{5_spectrum_maskon.pdf}
+
+		\newpage
+
+		DFT function implementation
+
+		% implementation from https://www.fit.vutbr.cz/study/courses/ISS/public/NEW_PRED/02_spectrum/spectrum.pdf slide 46
+		\begin{minted}[resetmargins=true,tabsize=4, python3=true]{python}
+			def dft(x):
+			X = []
+			N = len(x)
+			for k in range(N):
+			a = 0
+			for n in range(N):
+			a += x[n] * cmath.exp(-2j * cmath.pi * (k/N) * n)
+			X.append(a)
+			return X
+		\end{minted}
+
+		\item
+		Frequency response
+
+		Calculate the the mean from all frames, for each frequency
+
+		\begin{gather*}
+			H(e^{j\omega}) = \frac{1}{N} \sum_{n=0}^{N-1} \frac{ B_n(e^{j\omega}) }{ A_n(e^{j\omega}) } \\
+			N \text{- frame count (99 in our case)}
+		\end{gather*}
+
+		\includegraphics[width=\linewidth]{6_frequency_response.pdf}
+
+		\item
+		Impulse response
+
+		\includegraphics[width=\linewidth]{7_impulse_response.pdf}
+
+		IDFT function implementation
+
+		% implementation from https://www.fit.vutbr.cz/study/courses/ISS/public/NEW_PRED/02_spectrum/spectrum.pdf slide 51
+		\begin{minted}[resetmargins=true,tabsize=4, python3=true]{python}
+			def idft(X):
+			x = []
+			N = len(X)
+			for n in range(N):
+			a = 0
+			for k in range(N):
+			a += X[k] * cmath.exp(2j * cmath.pi * (k/N) * n)
+			x.append(a / N)
+			return x
+		\end{minted}
+
+		\newpage
+
+		\item
+		Filtered signal
+
+		\includegraphics[width=\linewidth]{8_signal_maskoff.pdf} \\
+		\includegraphics[width=\linewidth]{8_signal_maskon.pdf} \\
+		\includegraphics[width=\linewidth]{8_signal_filtered.pdf}
 	\end{enumerate}
 
 \end{document}
