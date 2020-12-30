@@ -76,9 +76,12 @@ class AudioProcessor:
                     title="Spectrogram - mask on")
 
     def task6(self):
-        t_on = np.mean(np.abs(self.fft_on), axis=0)
-        t_off = np.mean(np.abs(self.fft_off), axis=0)
-        self.freq_response = t_on / (t_off + 1e-20)
+        # t_on = np.mean(np.abs(self.fft_on), axis=0)
+        # t_off = np.mean(np.abs(self.fft_off), axis=0)
+        # self.freq_response = t_on / (t_off + 1e-20)
+
+        t = abs(self.fft_on / self.fft_off)
+        self.freq_response = np.mean(t, axis=0)
 
         plotter.plot(operations.logarithmize_spectrum(self.freq_response), "6_frequency_response.pdf",
                      title="Frequency response",
@@ -109,3 +112,18 @@ class AudioProcessor:
 
         dt = operations.apply_filter(self.off_tone, self.impulse_response.real)
         iss.io.save_file("sim_maskon_tone.wav", dt, self.off_tone_sr)
+
+        # ft = operations.apply_filter(self.off_frames[0], np.abs(self.impulse_response))
+
+        # from numpy.fft import fft
+        # plotter.plot_list([abs(fft(self.off_frames[0], 1024)[:512]),
+        #                    abs(fft(self.on_frames[0], 1024)[:512]),
+        #                    abs(fft(ft, 1024)[:512])
+        #                    ],
+        #                   "debug.pdf", plot_labels=["original", "target", "filtered"])
+
+        # plotter.plot_list([self.off_frames[0],
+        #                    self.on_frames[0],
+        #                    ft
+        #                    ],
+        #                   "debug.pdf", plot_labels=["original", "target", "filtered"])
