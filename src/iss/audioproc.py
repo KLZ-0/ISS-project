@@ -98,7 +98,7 @@ class AudioProcessor:
                      xlabel="Time [s]")
 
         plotter.plot(self.on_sentence, "8_signal_maskon.pdf",
-                     title="Original signal (maskon)",
+                     title="Target signal (maskon)",
                      xlabel="Time [s]")
 
         dt = operations.apply_filter(self.off_sentence, self.impulse_response.real)

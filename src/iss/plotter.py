@@ -79,7 +79,6 @@ def plot_list(datalist, filename, figsize=FIG_SIZE, title="Title", xlabel="x", y
 
 
 def img(data, filename, figsize=(8, 4), title="Title"):
-    # plt.imsave(path.join("outputs", "test.png"), data)
     plt.figure(figsize=figsize)
     plt.imshow(data,
                aspect="auto",
