@@ -189,7 +189,7 @@ class AudioProcessor:
 
         plotter.plot(operations.logarithmize_spectrum(response), "11_response.pdf",
                      title="Window frequency response",
-                     xlabel="Frequency",
+                     xlabel="Normalized frequency",
                      ylabel="Magnitude [dB]")
 
         plotter.plot_list([self.off_frames[0], self.on_frames[0]], "11_frames_after.pdf",

@@ -205,6 +205,20 @@
     \section*{Solution - additional tasks}
 
     \begin{enumerate}
+        \item[11.]
+        Window function
+
+        The Hann window function has been used.
+
+        Phase shifting (from task 15) has been applied before the window function,
+        this choice was made because it shows better how the function behaves in the next graphs.
+
+        \includegraphics[width=\linewidth]{11_window.pdf} \\
+        \includegraphics[width=\linewidth]{11_response.pdf} \\
+        \includegraphics[width=\linewidth]{11_frames_before.pdf} \\
+        \includegraphics[width=\linewidth]{11_frames_after.pdf}
+
+        \newpage
         \item[15.]
         Phase shift
 
@@ -216,7 +230,7 @@
         From the above graph, we can see that the required phase shift increases almost linearly -
         this is caused by the frequency of the "mask off" signal being a little bit lower than the "mask on" signal
 
-        \vspace{2mm}
+        \vspace{6mm}
 
         \textbf{Q:} When we take the sum of phase shifts from both sides,
         we can see that it resembles the lag in autocorrelation,
@@ -229,14 +243,14 @@
         Because autocorrelation is done on only one signal,
         the shortest shift at which the signal is similar to itself is its own period.
 
-        \textrightarrow~\textbf{The autocorrelation coefficient (and therefore lag) represents one period.}
+        \textbf{The autocorrelation coefficient (and therefore lag) represents one period.}
 
         In cross-correlation the coefficient represents the shortest shift in a certain direction,
         but because the signals have similar frequencies and the cross-correlation is done from both sides,
         summing up these two values results in them
         being equal to the signals period $T$ in samples.
 
-        \textrightarrow~\textbf{Both cross-correlation coefficients represent a part of the period (e.g.\ 1/3 and 2/3)
+        \textbf{Both cross-correlation coefficients represent a part of the period (e.g.\ 1/3 and 2/3)
         which summed up results in one period.}
     \end{enumerate}
 
