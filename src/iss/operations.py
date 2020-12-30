@@ -91,6 +91,6 @@ def align_frames(frames1, frames2, samplerate, min_corr_margin=3):
 def window_frames(frames):
     window = get_window("hann", frames[0].shape[-1])
     fft_res = fft(window, 1024) / (len(window) / 2.0)
-    response = np.abs(fft_res / abs(fft_res).max())[:512]
+    response = np.abs(fft_res)[:512]
 
     return [frame * window for frame in frames], window, response
