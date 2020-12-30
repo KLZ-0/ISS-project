@@ -113,13 +113,20 @@
         \end{tabular}
 
         \vspace{2mm}
-        A possible solution to the mentioned problem:
+        There are two possible solutions that come to my mind to the mentioned problem:
 
-        In our implementation, lag was defined as \texttt{np.argmax(autocorrelation\_array)} and therefore it was an integer.
+        \begin{itemize}
+            \item
+            In our implementation, lag was defined as \texttt{np.argmax(autocorrelation\_array)} and therefore it was an integer.
 
-        An alternate implementation would be to approximate lag as a weighted arithmetic mean from the surrounding indices and their values
-        which would make it a floating point number resulting in better precision.
-        This method would eliminate rapid changes of $f_0$ in most cases.
+            An alternate implementation would be to approximate lag as a weighted arithmetic mean from the surrounding indices and their values
+            which would make it a floating point number resulting in better precision.
+            This method would eliminate rapid changes of $f_0$ in most cases.
+
+            \item
+            Autocorrelation with higher resolution - this would eliminate the rapid changes in $f_0$
+            but would require a longer computation time.
+        \end{itemize}
 
         \item
         Spectrograms
