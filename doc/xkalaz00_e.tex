@@ -17,172 +17,196 @@
 
 \begin{document}
 
-	% header
-	\begin{center}
-	{\includegraphics[width=0.4\linewidth]{fig/logo_en.png}}
-		\\
-		[0.4cm]
+    % header
+    \begin{center}
+    {\includegraphics[width=0.4\linewidth]{fig/logo_en.png}}
+        \\
+        [0.4cm]
 
-		{\LARGE
-		ISS - Project \\
-		[0.4cm]
-		}
+        {\LARGE
+        ISS - Project \\
+        [0.4cm]
+        }
 
-		{\large
-		Adrián Kálazi (xkalaz00) \\
-		\today
-		}
-	\end{center}
+        {\large
+        Adrián Kálazi (xkalaz00) \\
+        \today
+        }
+    \end{center}
 
-	% actual content
-	\section*{Abstract}
+    % actual content
+    \section*{Abstract}
 
-	The calculations were implemented using \textbf{Python (3.5+)} with the following libraries:
+    The calculations were implemented using \textbf{Python (3.5+)} with the following libraries:
 
-	\begin{itemize}
-		\item numpy - arrays, \texttt{fft}, \texttt{ifft}
-		\item scipy - \texttt{lfilter}
-		\item soundfile - wav reading/writing
-		\item matplotlib - plotting
-	\end{itemize}
+    \begin{itemize}
+        \item numpy - arrays, \texttt{fft}, \texttt{ifft}
+        \item scipy - \texttt{lfilter}
+        \item soundfile - wav reading/writing
+        \item matplotlib - plotting
+    \end{itemize}
 
-	The implementation consists of a Python module and a launcher script (\texttt{main.py}).
+    The implementation consists of a Python module and a launcher script (\texttt{main.py}).
 
-	Running the script:
-	\begin{itemize}
-		\item
-		On a system without the required libraries - execute \texttt{./run-venv.sh} in the \texttt{src/} folder.
+    Running the script:
+    \begin{itemize}
+        \item
+        On a system without the required libraries - execute \texttt{./run-venv.sh} in the \texttt{src/} folder.
 
-		This will setup a virtual environment, install the requirements and run the script.
-		\item
-		On a system with the required libraries - execute \texttt{python3 ./main.py} in the \texttt{src/} folder.
-	\end{itemize}
+        This will setup a virtual environment, install the requirements and run the script.
+        \item
+        On a system with the required libraries - execute \texttt{python3 ./main.py} in the \texttt{src/} folder.
+    \end{itemize}
 
-	\section*{Solution}
+    \section*{Solution}
 
-	\begin{enumerate}
-		\item
-		The audio was recorded with \texttt{\href{https://apps.kde.org/en/kwave}{KWave}} in 16-bit resolution at 48~kHz.
+    \begin{enumerate}
+        \item
+        The audio was recorded with \texttt{\href{https://apps.kde.org/en/kwave}{KWave}} in 16-bit resolution at 48~kHz.
 
-		The sampling rate was later scaled down to 16~kHz using \texttt{ffmpeg}
+        The sampling rate was later scaled down to 16~kHz using \texttt{ffmpeg}
 
-		Durations of recorded signals: \\
-		\begin{tabular}{ | l | l | l | }
-			\hline
-			\textbf{File} & \textbf{Samples} & \textbf{Seconds} \\ \hline
-			maskoff\_tone.wav & 24806            & 1.55             \\ \hline
-			maskon\_tone.wav  & 17137            & 1.07             \\ \hline
-		\end{tabular}
+        Durations of recorded signals: \\
+        \begin{tabular}{ | l | l | l | }
+            \hline
+            \textbf{File}     & \textbf{Samples} & \textbf{Seconds} \\ \hline
+            maskoff\_tone.wav & 24806            & 1.55             \\ \hline
+            maskon\_tone.wav  & 17137            & 1.07             \\ \hline
+        \end{tabular}
 
-		\item
-		The sentence recording process was the same as above
+        \item
+        The sentence recording process was the same as above
 
-		Durations of recorded signals: \\
-		\begin{tabular}{ | l | l | l | }
-			\hline
-			\textbf{File}      & \textbf{Samples} & \textbf{Seconds} \\ \hline
-			maskoff\_sentence.wav & 41162            & 2.57             \\ \hline
-			maskon\_sentence.wav  & 43312            & 2.71             \\ \hline
-		\end{tabular}
+        Durations of recorded signals: \\
+        \begin{tabular}{ | l | l | l | }
+            \hline
+            \textbf{File}         & \textbf{Samples} & \textbf{Seconds} \\ \hline
+            maskoff\_sentence.wav & 41162            & 2.57             \\ \hline
+            maskon\_sentence.wav  & 43312            & 2.71             \\ \hline
+        \end{tabular}
 
-		\newpage
-		\item
-		Frame duration $t_F = 20\,ms$ \\
-		Sampling frequency $F_s = 16\,kHz$
+        \newpage
+        \item
+        Frame duration $t_F = 20\,ms$ \\
+        Sampling frequency $F_s = 16\,kHz$
 
-		Frame size in samples: $n_F = t_F \times F_s = 20~ms \times 16~kHz = 320~samples$
+        Frame size in samples: $n_F = t_F \times F_s = 20~ms \times 16~kHz = 320~samples$
 
-		\includegraphics[width=\linewidth]{3_frames.pdf}
+        \includegraphics[width=\linewidth]{3_frames.pdf}
 
-		\item
-		Frames
+        \item
+        Frames
 
-		\includegraphics[width=\linewidth]{4_frame.pdf} \\
-		\includegraphics[width=\linewidth]{4_frame_clipped.pdf} \\
-		\includegraphics[width=\linewidth]{4_frame_autocorrelated.pdf} \\
-		\includegraphics[width=\linewidth]{4_base_frequencies.pdf}
+        \includegraphics[width=\linewidth]{4_frame.pdf} \\
+        \includegraphics[width=\linewidth]{4_frame_clipped.pdf} \\
+        \includegraphics[width=\linewidth]{4_frame_autocorrelated.pdf} \\
+        \includegraphics[width=\linewidth]{4_base_frequencies.pdf}
 
-		\newpage
-		Mean and variance of base frequencies: \\
-		\begin{tabular}{ | l | l | l | }
-			\hline
-			\textbf{Signal}    & \textbf{Mean} $[Hz]$ & \textbf{Variance} $[Hz]$ \\ \hline
-			maskoff\_sentence.wav & 139.466              & 0.803                    \\ \hline
-			maskon\_sentence.wav  & 143.478              & 1.883                    \\ \hline
-		\end{tabular}
+        \newpage
+        Mean and variance of base frequencies: \\
+        \begin{tabular}{ | l | l | l | }
+            \hline
+            \textbf{Signal}       & \textbf{Mean} $[Hz]$ & \textbf{Variance} $[Hz]$ \\ \hline
+            maskoff\_sentence.wav & 139.466              & 0.803                    \\ \hline
+            maskon\_sentence.wav  & 143.478              & 1.883                    \\ \hline
+        \end{tabular}
 
-		\vspace{2mm}
-		A possible solution to the mentioned problem:
+        \vspace{2mm}
+        A possible solution to the mentioned problem:
 
-		In our implementation, lag was defined as \texttt{np.argmax(autocorrelation\_array)} and therefore it was an integer.
+        In our implementation, lag was defined as \texttt{np.argmax(autocorrelation\_array)} and therefore it was an integer.
 
-		An alternate implementation would be to approximate lag as a weighted arithmetic mean from the surrounding indices and their values
-		which would make it a floating point number resulting in better precision.
-		This method would eliminate rapid changes of $f_0$ in most cases.
+        An alternate implementation would be to approximate lag as a weighted arithmetic mean from the surrounding indices and their values
+        which would make it a floating point number resulting in better precision.
+        This method would eliminate rapid changes of $f_0$ in most cases.
 
-		\item
-		Spectrograms
+        \item
+        Spectrograms
 
-		\includegraphics[width=\linewidth]{5_spectrum_maskoff.pdf} \\
-		\includegraphics[width=\linewidth]{5_spectrum_maskon.pdf}
+        \includegraphics[width=\linewidth]{5_spectrum_maskoff.pdf} \\
+        \includegraphics[width=\linewidth]{5_spectrum_maskon.pdf}
 
-		\newpage
+        \newpage
 
-		DFT function implementation
+        DFT function implementation
 
+        % @formatter:off
 		% implementation from https://www.fit.vutbr.cz/study/courses/ISS/public/NEW_PRED/02_spectrum/spectrum.pdf slide 46
 		\begin{minted}[resetmargins=true,tabsize=4, python3=true]{python}
-			def dft(x):
+		def dft(x):
 			X = []
 			N = len(x)
 			for k in range(N):
-			a = 0
-			for n in range(N):
-			a += x[n] * cmath.exp(-2j * cmath.pi * (k/N) * n)
-			X.append(a)
+				a = 0
+				for n in range(N):
+					a += x[n] * cmath.exp(-2j * cmath.pi * (k/N) * n)
+				X.append(a)
 			return X
 		\end{minted}
+		% @formatter:on
 
-		\item
-		Frequency response
+        \item
+        Frequency response
 
-		Calculate the the mean from all frames, for each frequency
+        Calculate the the mean from all frames, for each frequency
 
-		\begin{gather*}
-			H(e^{j\omega}) = \frac{1}{N} \sum_{n=0}^{N-1} \frac{ B_n(e^{j\omega}) }{ A_n(e^{j\omega}) } \\
-			N \text{- frame count (99 in our case)}
-		\end{gather*}
+        \begin{gather*}
+            H(e^{j\omega}) = \frac{1}{N} \sum_{n=0}^{N-1} \frac{ B_n(e^{j\omega}) }{ A_n(e^{j\omega}) } \\
+            N \text{ - frame count, } A_n, B_n \text{ - spectrums for frame n}
+        \end{gather*}
 
-		\includegraphics[width=\linewidth]{6_frequency_response.pdf}
+        \includegraphics[width=\linewidth]{6_frequency_response.pdf}
 
-		\item
-		Impulse response
+        \item
+        Impulse response
 
-		\includegraphics[width=\linewidth]{7_impulse_response.pdf}
+        \includegraphics[width=\linewidth]{7_impulse_response.pdf}
 
-		IDFT function implementation
+        IDFT function implementation
 
+        % @formatter:off
 		% implementation from https://www.fit.vutbr.cz/study/courses/ISS/public/NEW_PRED/02_spectrum/spectrum.pdf slide 51
 		\begin{minted}[resetmargins=true,tabsize=4, python3=true]{python}
-			def idft(X):
+		def idft(X):
 			x = []
 			N = len(X)
 			for n in range(N):
-			a = 0
-			for k in range(N):
-			a += X[k] * cmath.exp(2j * cmath.pi * (k/N) * n)
-			x.append(a / N)
+				a = 0
+				for k in range(N):
+					a += X[k] * cmath.exp(2j * cmath.pi * (k/N) * n)
+				x.append(a / N)
 			return x
 		\end{minted}
+		% @formatter:on
 
-		\newpage
+        \newpage
 
-		\item
-		Filtered signal
+        \item
+        Filtered signal
 
-		\includegraphics[width=\linewidth]{8_signal_maskoff.pdf} \\
-		\includegraphics[width=\linewidth]{8_signal_maskon.pdf} \\
-		\includegraphics[width=\linewidth]{8_signal_filtered.pdf}
-	\end{enumerate}
+        \includegraphics[width=\linewidth]{8_signal_maskoff.pdf} \\
+        \includegraphics[width=\linewidth]{8_signal_maskon.pdf} \\
+        \includegraphics[width=\linewidth]{8_signal_filtered.pdf}
+
+        \item
+        Conclusion
+
+    \end{enumerate}
+
+    \newpage
+    \section*{Solution - additional tasks}
+
+    \begin{enumerate}
+        \item[15.]
+        Phase shift
+
+        \includegraphics[width=\linewidth]{15_frames_before.pdf}
+        \includegraphics[width=\linewidth]{15_frames_after.pdf}
+
+        \includegraphics[width=\linewidth]{15_shifts.pdf}
+
+        From the above graph, we can see that the required phase shift increases almost linearly -
+        this is caused by the frequency of the "mask off" signal being a little bit lower than the "mask on" signal
+    \end{enumerate}
 
 \end{document}

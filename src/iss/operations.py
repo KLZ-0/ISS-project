@@ -1,8 +1,10 @@
+import sys
+
 import numpy as np
 from numpy.fft import fft, ifft
 from scipy.signal import lfilter
 
-from iss.res import CORREL_FREQ_MARGIN
+from iss.res import CORREL_FREQ_MARGIN, ALIGN_MIN_FREQ, ALIGNED_FRAME_DURATION
 
 
 def center_clip_frame(frame):
@@ -10,12 +12,19 @@ def center_clip_frame(frame):
     return np.asarray([1 if sample > 0.7 * cliplim else -1 if sample < -0.7 * cliplim else 0 for sample in frame])
 
 
-def autocorrelate_frame(frame, correl_margin):
+def correlate_frame(frame1, frame2, min_margin=0, max_margin=-1):
+    if len(frame1) != len(frame2):
+        print("Frame lenghts don't match, wtf?", file=sys.stderr)
+        sys.exit(1)
+
+    if max_margin == -1:
+        max_margin = len(frame1)
+
     rs = []
 
-    for k in range(int(correl_margin), len(frame)):
-        f1 = frame[k:]
-        f2 = frame[:len(frame) - k]
+    for k in range(int(min_margin), max_margin):
+        f1 = frame1[k:]
+        f2 = frame2[:len(frame1) - k]
 
         rs.append(f1.dot(f2))
 
@@ -28,7 +37,7 @@ def frames_to_base_frequency(frames, samplerate):
 
     for frame in frames:
         wf = center_clip_frame(frame)
-        lag = np.argmax(autocorrelate_frame(wf, corr_margin)) + corr_margin
+        lag = np.argmax(correlate_frame(wf, wf, corr_margin)) + corr_margin
         freqs.append(samplerate / lag)
 
     return np.asarray(freqs)
@@ -47,4 +56,33 @@ def impulse_response(frequency_response):
 
 
 def apply_filter(data, flt):
-    return lfilter(a=[1], b=flt, x=data)
+    return lfilter(a=[1], b=flt.real, x=data)
+
+
+def align_frames(frames1, frames2, samplerate, min_corr_margin=3):
+    max_margin = int(samplerate / (ALIGN_MIN_FREQ * 2))
+    target_frame_size = int(samplerate * ALIGNED_FRAME_DURATION)
+
+    shifts = []
+
+    for frame_n in range(len(frames1)):
+        f_off = center_clip_frame(frames1[frame_n])
+        f_on = center_clip_frame(frames2[frame_n])
+
+        dt1 = np.argmax(correlate_frame(f_off, f_on, min_margin=min_corr_margin, max_margin=max_margin))
+        dt2 = np.argmax(correlate_frame(f_on, f_off, min_margin=min_corr_margin, max_margin=max_margin))
+        delta = min(dt1, dt2) + min_corr_margin
+
+        if dt1 < dt2:
+            frames1[frame_n] = frames1[frame_n][delta:]
+            frames2[frame_n] = frames2[frame_n][:len(frames2[frame_n]) - delta]
+        else:
+            frames2[frame_n] = frames2[frame_n][delta:]
+            frames1[frame_n] = frames1[frame_n][:len(frames1[frame_n]) - delta]
+
+        frames2[frame_n] = frames2[frame_n][:target_frame_size]
+        frames1[frame_n] = frames1[frame_n][:target_frame_size]
+
+        shifts.append(delta if dt1 < dt2 else -delta)
+
+    return np.asarray(shifts)

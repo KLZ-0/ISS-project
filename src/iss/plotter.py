@@ -7,7 +7,7 @@ from matplotlib import pyplot as plt
 from iss.res import CORREL_FREQ_MARGIN, FIG_SIZE
 
 
-def debug(data):
+def debug(data, filename="test.png"):
     time = np.linspace(0., len(data), data.shape[0])
     plt.figure(figsize=FIG_SIZE)
     plt.plot(time, data)
@@ -16,7 +16,7 @@ def debug(data):
     plt.gca().set_title('Signal')
     plt.tight_layout()
 
-    plt.savefig(path.join("outputs", "test.png"))
+    plt.savefig(path.join("outputs", filename))
 
 
 def plot(data, filename, figsize=FIG_SIZE, title="Title", xlabel="x", ylabel="y", plot_label=None, correl_samplerate=0):

@@ -3,7 +3,7 @@ from os import path
 import numpy as np
 import soundfile
 
-from iss.res import audiopath, frame_size
+from iss.res import audiopath, FRAME_DURATION, SAMPLE_DURATION
 
 
 def load_data(filename, delay):
@@ -30,13 +30,16 @@ def load_data(filename, delay):
 def load_frames(filename, delay):
     data, samplerate = load_data(filename, delay)
 
-    # 20ms frames @ 16kHz
-    frame_len = int(frame_size * (samplerate / 1000))
+    totoal_dur = SAMPLE_DURATION * samplerate
+
+    frame_len = int(FRAME_DURATION * samplerate)
     frame_step = int(frame_len / 2)
 
     frames = []
-    for i in range(99):
-        frames.append(data[i * frame_step:(i * frame_step) + frame_len])
+    frame_start = 0
+    while frame_start + frame_len <= totoal_dur:
+        frames.append(data[frame_start:frame_start + frame_len])
+        frame_start += frame_step
 
     return frames, samplerate
 
