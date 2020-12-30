@@ -139,19 +139,19 @@
         DFT function implementation
 
         % @formatter:off
-		% implementation from https://www.fit.vutbr.cz/study/courses/ISS/public/NEW_PRED/02_spectrum/spectrum.pdf slide 46
-		\begin{minted}[resetmargins=true,tabsize=4, python3=true]{python}
-		def dft(x):
-			X = []
-			N = len(x)
-			for k in range(N):
-				a = 0
-				for n in range(N):
-					a += x[n] * cmath.exp(-2j * cmath.pi * (k/N) * n)
-				X.append(a)
-			return X
-		\end{minted}
-		% @formatter:on
+        % implementation from https://www.fit.vutbr.cz/study/courses/ISS/public/NEW_PRED/02_spectrum/spectrum.pdf slide 46
+        \begin{minted}[resetmargins=true,tabsize=4, python3=true]{python}
+        def dft(x):
+            X = []
+            N = len(x)
+            for k in range(N):
+                a = 0
+                for n in range(N):
+                    a += x[n] * cmath.exp(-2j * cmath.pi * (k/N) * n)
+                X.append(a)
+            return X
+        \end{minted}
+        % @formatter:on
 
         \item
         Frequency response
@@ -173,19 +173,19 @@
         IDFT function implementation
 
         % @formatter:off
-		% implementation from https://www.fit.vutbr.cz/study/courses/ISS/public/NEW_PRED/02_spectrum/spectrum.pdf slide 51
-		\begin{minted}[resetmargins=true,tabsize=4, python3=true]{python}
-		def idft(X):
-			x = []
-			N = len(X)
-			for n in range(N):
-				a = 0
-				for k in range(N):
-					a += X[k] * cmath.exp(2j * cmath.pi * (k/N) * n)
-				x.append(a / N)
-			return x
-		\end{minted}
-		% @formatter:on
+        % implementation from https://www.fit.vutbr.cz/study/courses/ISS/public/NEW_PRED/02_spectrum/spectrum.pdf slide 51
+        \begin{minted}[resetmargins=true,tabsize=4, python3=true]{python}
+        def idft(X):
+            x = []
+            N = len(X)
+            for n in range(N):
+                a = 0
+                for k in range(N):
+                    a += X[k] * cmath.exp(2j * cmath.pi * (k/N) * n)
+                x.append(a / N)
+            return x
+        \end{minted}
+        % @formatter:on
 
         \newpage
 
