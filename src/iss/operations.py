@@ -52,7 +52,7 @@ def logarithmize_spectrum(fft_frames):
 
 
 def impulse_response(frequency_response):
-    return ifft(frequency_response, n=320)[:160]
+    return ifft(frequency_response, n=512)[:256]
 
 
 def apply_filter(data, flt):
