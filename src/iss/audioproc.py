@@ -4,16 +4,11 @@ import numpy as np
 
 import iss.io
 from iss import plotter, operations
+from iss.res import ALIGNED_FRAME_DURATION
 
 
 class AudioProcessor:
     run_n = 0
-
-    # initialized but reset in certain cases
-    off_frames = None
-    on_frames = None
-    off_sr = 0
-    on_sr = 0
 
     # set in task5
     fft_on = None
@@ -27,13 +22,14 @@ class AudioProcessor:
 
     def __init__(self):
         # task 1, 2, 3
-        self.load_frames()
+        self.off_frames, self.off_sr = iss.io.load_file_as_frames("maskoff_tone.wav", frame_size=ALIGNED_FRAME_DURATION)
+        self.on_frames, self.on_sr = iss.io.load_file_as_frames("maskon_tone.wav", frame_size=ALIGNED_FRAME_DURATION)
 
         self.off_tone, self.off_tone_sr = iss.io.load_file_as_signal("maskoff_tone.wav")
         self.off_sentence, self.off_sentence_sr = iss.io.load_file_as_signal("maskoff_sentence.wav")
         self.on_sentence, self.on_sentence_sr = iss.io.load_file_as_signal("maskon_sentence.wav")
 
-    def load_frames(self):
+    def reload_frames(self):
         self.off_frames, self.off_sr = iss.io.load_file_as_frames("maskoff_tone.wav")
         self.on_frames, self.on_sr = iss.io.load_file_as_frames("maskon_tone.wav")
 
@@ -47,6 +43,9 @@ class AudioProcessor:
         self.task8()
         plotter.flush()
 
+        # reload the original frames, but with different frame size
+        self.reload_frames()
+
         # task 15 - phase shift
         self.run_n = 1
         self.task15()
@@ -57,7 +56,7 @@ class AudioProcessor:
         plotter.flush()
 
         # reload the original frames
-        self.load_frames()
+        self.reload_frames()
 
         # task 11 - window function + also shifted because it looks better
         self.run_n = 2

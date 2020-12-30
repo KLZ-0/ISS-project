@@ -27,12 +27,12 @@ def load_data(filename, delay):
     return data, samplerate
 
 
-def load_frames(filename, delay):
+def load_frames(filename, delay, frame_size):
     data, samplerate = load_data(filename, delay)
 
     totoal_dur = SAMPLE_DURATION * samplerate
 
-    frame_len = int(FRAME_DURATION * samplerate)
+    frame_len = int(frame_size * samplerate)
     frame_step = int(frame_len / 2)
 
     frames = []
@@ -44,8 +44,8 @@ def load_frames(filename, delay):
     return frames, samplerate
 
 
-def load_file_as_frames(filename, delay=0):
-    return load_frames(filename, delay)
+def load_file_as_frames(filename, delay=0, frame_size=FRAME_DURATION):
+    return load_frames(filename, delay, frame_size)
 
 
 def load_file_as_signal(filename):
