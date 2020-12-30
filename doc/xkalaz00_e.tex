@@ -9,6 +9,7 @@
 \usepackage{fancyhdr}
 \usepackage[outputdir=build]{minted}
 \usepackage{amsmath}
+\usepackage{textcomp}
 
 % for indented itemize list
 \usepackage{enumitem}
@@ -207,6 +208,29 @@
 
         From the above graph, we can see that the required phase shift increases almost linearly -
         this is caused by the frequency of the "mask off" signal being a little bit lower than the "mask on" signal
+
+        \vspace{2mm}
+
+        \textbf{Q:} When we take the sum of phase shifts from both sides,
+        we can see that it resembles the lag in autocorrelation,
+        what is the reason for this behaviour?
+
+        \textbf{A:} This is due to the coefficients (and lag) representing a shift at which both signals are the "most similar".
+
+        In autocorrelation this results in the lag representing the number of samples until the next period occurs.
+
+        Because autocorrelation is done on only one signal,
+        the shortest shift at which the signal is similar to itself is its own period.
+
+        \textrightarrow~\textbf{The autocorrelation coefficient (and therefore lag) represents one period.}
+
+        In cross-correlation the coefficient represents the shortest shift in a certain direction,
+        but because the signals have similar frequencies and the cross-correlation is done from both sides,
+        summing up these two values results in them
+        being equal to the signals period $T$ in samples.
+
+        \textrightarrow~\textbf{Both cross-correlation coefficients represent a part of the period (e.g.\ 1/3 and 2/3)
+        which summed up results in one period.}
     \end{enumerate}
 
 \end{document}
