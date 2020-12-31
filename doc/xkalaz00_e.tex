@@ -153,14 +153,9 @@
 
         \newpage
         \item
-        Spectrograms
+        For calculations, the fast fourier transform function (\texttt{fft} from \texttt{np.fft}) was used
 
-        \includegraphics[width=\linewidth]{5_spectrum_maskoff.pdf} \\
-        \includegraphics[width=\linewidth]{5_spectrum_maskon.pdf}
-
-        \newpage
-
-        DFT function implementation
+        Example DFT function implementation
 
         % @formatter:off
         % implementation from https://www.fit.vutbr.cz/study/courses/ISS/public/NEW_PRED/02_spectrum/spectrum.pdf slide 46
@@ -177,6 +172,12 @@
         \end{minted}
         % @formatter:on
 
+        \includegraphics[width=\linewidth]{5_spectrum_maskoff.pdf} \\
+        \includegraphics[width=\linewidth]{5_spectrum_maskon.pdf}
+
+        The spectrograms show a bigger presence of high-frequency noise in the "mask on" than the "mask off" signal
+
+        \newpage
         \item
         Frequency response
 

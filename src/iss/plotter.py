@@ -98,7 +98,7 @@ def img(data, filename, figsize=(8, 4), title="Title"):
 
     plt.gca().set_title(title)
 
-    plt.colorbar(label="Spectral density [dB]")
+    plt.colorbar(label="Spectral power density [dB]")
 
     plt.savefig(path.join("outputs", filename))
 
