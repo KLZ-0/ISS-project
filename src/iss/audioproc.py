@@ -108,12 +108,12 @@ class AudioProcessor:
         print("4 ON", "\n- Mean:\t\t", np.mean(freqs_on), "\n- Variance:\t", np.var(freqs_on))
 
     def task5(self):
-        self.fft_off = operations.fft_spectrum(self.off_frames)
+        self.fft_off = operations.fft_spectrum_list(self.off_frames)
         if self.run_n == 0:
             plotter.img(operations.logarithmize_spectrum(self.fft_off).T, "5_spectrum_maskoff.pdf",
                         title="Spectrogram - mask off")
 
-        self.fft_on = operations.fft_spectrum(self.on_frames)
+        self.fft_on = operations.fft_spectrum_list(self.on_frames)
         if self.run_n == 0:
             plotter.img(operations.logarithmize_spectrum(self.fft_on).T, "5_spectrum_maskon.pdf",
                         title="Spectrogram - mask on")
@@ -174,10 +174,17 @@ class AudioProcessor:
         #                   "debug.pdf", plot_labels=["original", "target", "filtered"])
 
     def task11(self):
+        plotter.flush()
         plotter.plot_list([self.off_frames[0], self.on_frames[0]], "11_frames_before.pdf",
                           title="Frames before an applied window function",
                           xlabel="Time [ms]",
                           plot_labels=["Mask off", "Mask on"])
+
+        plotter.plot(np.abs(operations.fft_spectrum(self.on_frames[0])),
+                     "11_frame_spectrum_before.pdf",
+                     title="Spectral density before an applied window function",
+                     xlabel="Frequency [Hz]",
+                     xspan=(0, 8000))
 
         self.off_frames, window, response = operations.window_frames(self.off_frames)
         self.on_frames, _, _ = operations.window_frames(self.on_frames)
@@ -195,6 +202,13 @@ class AudioProcessor:
                           title="Frames after an applied window function",
                           xlabel="Time [ms]",
                           plot_labels=["Mask off", "Mask on"])
+
+        plotter.plot(np.abs(operations.fft_spectrum(self.on_frames[0])),
+                     "11_frame_spectrum_after.pdf",
+                     title="Spectral density after an applied window function",
+                     xlabel="Frequency [Hz]",
+                     xspan=(0, 8000))
+        plotter.flush()
 
     def task11b(self):
         dt = operations.apply_filter(self.off_sentence, self.impulse_response)

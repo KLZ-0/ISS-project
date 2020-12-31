@@ -43,8 +43,12 @@ def frames_to_base_frequency(frames, samplerate):
     return np.asarray(freqs)
 
 
-def fft_spectrum(frames):
+def fft_spectrum_list(frames):
     return fft(frames, 1024)[:, :512]
+
+
+def fft_spectrum(frames):
+    return fft(frames, 1024)[:512]
 
 
 def logarithmize_spectrum(fft_frames):

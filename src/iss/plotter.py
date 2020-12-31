@@ -19,9 +19,13 @@ def debug(data, filename="test.png"):
     plt.savefig(path.join("outputs", filename))
 
 
-def plot(data, filename, figsize=FIG_SIZE, title="Title", xlabel="x", ylabel="y", plot_label=None, correl_samplerate=0):
-    time = np.linspace(0., len(data) - 1, data.shape[0])
-    # time = np.arange(0, len(data), 1)
+def plot(data, filename, figsize=FIG_SIZE, title="Title", xlabel="x", ylabel="y", plot_label=None,
+         xspan=(0., -1.), correl_samplerate=0):
+    if float(xspan[1]) != -1.:
+        time = np.linspace(float(xspan[0]), float(xspan[1]), data.shape[0])
+    else:
+        time = np.linspace(float(xspan[0]), data.shape[0] - 1, data.shape[0])
+
     plt.figure(figsize=figsize)
     if plot_label:
         plt.plot(time, data, label=plot_label)
@@ -49,13 +53,17 @@ def plot(data, filename, figsize=FIG_SIZE, title="Title", xlabel="x", ylabel="y"
     plt.savefig(path.join("outputs", filename))
 
 
-def plot_list(datalist, filename, figsize=FIG_SIZE, title="Title", xlabel="x", ylabel="y", plot_labels=None):
+def plot_list(datalist, filename, figsize=FIG_SIZE, title="Title", xlabel="x", ylabel="y", plot_labels=None,
+              xspan=(0., -1.)):
     if plot_labels and len(plot_labels) != len(datalist):
         print("Data list size does not match label list size, wtf?", file=sys.stderr)
         return
 
-    time = np.linspace(0., len(datalist[0]) - 1, datalist[0].shape[0])
-    # time = np.arange(0, len(data), 1)
+    if float(xspan[1]) != -1.:
+        time = np.linspace(float(xspan[0]), float(xspan[1]), datalist[0].shape[0])
+    else:
+        time = np.linspace(float(xspan[0]), datalist[0].shape[0] - 1, datalist[0].shape[0])
+
     plt.figure(figsize=figsize)
     for i in range(len(datalist)):
         if plot_labels:
