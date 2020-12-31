@@ -95,7 +95,7 @@
         The base tasks are calculated with 20ms frames extracted from the signal, resulting in a total of 99 frames
         (the last half-frame is ignored).
 
-        Note: We later recreate the frames with a 25ms duration for task 15.
+        We later recreate the frames with a 25ms duration for task 15.
 
         \vspace{2mm}
         \textbf{Calculation of the frame size:}
@@ -107,15 +107,11 @@
 
         \includegraphics[width=\linewidth]{3_frames.pdf}
 
+        \vspace{2mm}
         \item
-        Frames
+        The correlation function implementation is located in \texttt{iss.operations.correlate\_frame}
+        and the function is also used in task 15 for correlation.
 
-        \includegraphics[width=\linewidth]{4_frame.pdf} \\
-        \includegraphics[width=\linewidth]{4_frame_clipped.pdf} \\
-        \includegraphics[width=\linewidth]{4_frame_autocorrelated.pdf} \\
-        \includegraphics[width=\linewidth]{4_base_frequencies.pdf}
-
-        \newpage
         Mean and variance of base frequencies: \\
         \begin{tabular}{ | l | l | l | }
             \hline
@@ -125,7 +121,9 @@
         \end{tabular}
 
         \vspace{2mm}
-        There are two possible solutions that come to my mind to the mentioned problem:
+        \textbf{Q:} How can the $f_0$ change be reduced for $\pm1$ errors of the lag?
+
+        \textbf{A:} There are two possible solutions that come to my mind to the mentioned problem:
 
         \begin{itemize}
             \item
@@ -140,6 +138,20 @@
             but would require a longer computation time.
         \end{itemize}
 
+        \newpage
+        \includegraphics[width=\linewidth]{4_frame.pdf} \\
+        \includegraphics[width=\linewidth]{4_frame_clipped.pdf} \\
+        \includegraphics[width=\linewidth]{4_frame_autocorrelated.pdf} \\
+        \includegraphics[width=\linewidth]{4_base_frequencies.pdf}
+
+        After center clipping and autocorrelation, the resulting base frequencies were examined
+        and we came to the conclusion that the frequencies are "close enough"
+        for them to be used safely for designing our filter.
+
+        Task 11 also implements an alternative where only frames with matching base frequencies are used for
+        determining the frequency response.
+
+        \newpage
         \item
         Spectrograms
 
