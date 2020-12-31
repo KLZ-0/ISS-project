@@ -1,7 +1,7 @@
 import sys
 
 import numpy as np
-from numpy.fft import fft, ifft
+from numpy.fft import fft, ifft, fftshift
 from scipy.signal import lfilter, get_window
 
 from iss.res import CORREL_FREQ_MARGIN, ALIGN_MIN_FREQ, ALIGNED_FRAME_DURATION
@@ -95,6 +95,6 @@ def align_frames(frames1, frames2, samplerate, min_corr_margin=3):
 def window_frames(frames):
     window = get_window("hann", frames[0].shape[-1])
     fft_res = fft(window, 1024) / (len(window) / 2.0)
-    response = np.abs(fft_res)[:512]
+    response = np.abs(fftshift(fft_res / abs(fft_res).max()))
 
     return [frame * window for frame in frames], window, response
