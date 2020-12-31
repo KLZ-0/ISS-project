@@ -10,6 +10,10 @@ from iss.res import ALIGNED_FRAME_DURATION
 class AudioProcessor:
     run_n = 0
 
+    # set in task 4
+    # used in task 11
+    valid_frames = {"off": [], "on": []}
+
     # set in task5
     fft_on = None
     fft_off = None
@@ -42,6 +46,13 @@ class AudioProcessor:
         self.task7()
         self.task8()
         plotter.flush()
+
+        # task 13
+        self.run_n = 3
+        self.task13()
+        self.task6()
+        self.task7()
+        self.task13b()
 
         # reload the original frames, but with different frame size
         self.reload_frames()
@@ -103,6 +114,11 @@ class AudioProcessor:
                               xlabel="Frames",
                               ylabel="$f0$ [Hz]",
                               plot_labels=["Mask off", "Mask on"])
+
+        for i in range(len(self.off_frames)):
+            if freqs_off[i] == freqs_on[i]:
+                self.valid_frames["off"].append(self.off_frames[i])
+                self.valid_frames["on"].append(self.on_frames[i])
 
         print("4 OFF", "\n- Mean:\t\t", np.mean(freqs_off), "\n- Variance:\t", np.var(freqs_off))
         print("4 ON", "\n- Mean:\t\t", np.mean(freqs_on), "\n- Variance:\t", np.var(freqs_on))
@@ -219,6 +235,22 @@ class AudioProcessor:
 
         dt = operations.apply_filter(self.off_tone, self.impulse_response)
         iss.io.save_file("sim_maskon_tone_window.wav", dt, self.off_tone_sr)
+
+    def task13(self):
+        self.fft_off = operations.fft_spectrum_list(self.valid_frames["off"])
+        self.fft_on = operations.fft_spectrum_list(self.valid_frames["on"])
+
+    def task13b(self):
+        plotter.plot(operations.logarithmize_spectrum(self.freq_response), "13_frequency_response.pdf",
+                     title="Frequency response",
+                     xlabel="Frequency [Hz]",
+                     ylabel="Gain [dB]")
+
+        dt = operations.apply_filter(self.off_sentence, self.impulse_response)
+        iss.io.save_file("sim_maskon_sentence_only_match.wav", dt, self.off_sentence_sr)
+
+        dt = operations.apply_filter(self.off_tone, self.impulse_response)
+        iss.io.save_file("sim_maskon_tone_only_match.wav", dt, self.off_tone_sr)
 
     def task15(self):
         """
