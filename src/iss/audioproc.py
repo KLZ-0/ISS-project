@@ -31,7 +31,7 @@ class AudioProcessor:
 
     def reload_frames(self):
         self.off_frames, self.off_sr = iss.io.load_file_as_frames("maskoff_tone.wav")
-        self.on_frames, self.on_sr = iss.io.load_file_as_frames("maskon_tone.wav")
+        self.on_frames, self.on_sr = iss.io.load_file_as_frames("maskon_tone.wav", delay=20)
 
     def process_signals(self):
         # base tasks
