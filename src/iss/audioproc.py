@@ -237,8 +237,12 @@ class AudioProcessor:
         iss.io.save_file("sim_maskon_tone_window.wav", dt, self.off_tone_sr)
 
     def task13(self):
-        self.fft_off = operations.fft_spectrum_list(self.valid_frames["off"])
-        self.fft_on = operations.fft_spectrum_list(self.valid_frames["on"])
+        if len(self.valid_frames["off"]):
+            self.fft_off = operations.fft_spectrum_list(self.valid_frames["off"])
+            self.fft_on = operations.fft_spectrum_list(self.valid_frames["on"])
+        else:
+            # if no suitable frames found, continue with 5
+            self.task5()
 
     def task13b(self):
         plotter.plot(operations.logarithmize_spectrum(self.freq_response), "13_frequency_response.pdf",
