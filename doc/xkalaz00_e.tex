@@ -88,10 +88,22 @@
 
         \newpage
         \item
+        Firstly, one second long signals were extracted from the wav files.
+
+        Then the DC bias has been removed and the signals were normalized.
+
+        The base tasks are calculated with 20ms frames extracted from the signal, resulting in a total of 99 frames
+        (the last half-frame is ignored).
+
+        Note: We later recreate the frames with a 25ms duration for task 15.
+
+        \vspace{2mm}
+        \textbf{Calculation of the frame size:}
+
         Frame duration $t_F = 20\,ms$ \\
         Sampling frequency $F_s = 16\,kHz$
 
-        Frame size in samples: $n_F = t_F \times F_s = 20~ms \times 16~kHz = 320~samples$
+        Frame size (in samples): $n_F = t_F \times F_s = 20~ms \times 16~kHz = 320~samples$
 
         \includegraphics[width=\linewidth]{3_frames.pdf}
 
