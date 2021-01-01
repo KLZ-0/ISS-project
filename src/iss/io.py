@@ -19,11 +19,6 @@ def load_data(filename, delay):
     # normalize (peaks will be 1 and -1)
     data /= np.abs(data).max()
 
-    # plot
-    # plotter.plot(data, "1_" + path.splitext(filename)[0] + ".pdf",
-    #              title="Signal",
-    #              xlabel="Time [ms]")
-
     return data, samplerate
 
 

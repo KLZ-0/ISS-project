@@ -7,18 +7,6 @@ from matplotlib import pyplot as plt
 from iss.res import CORREL_FREQ_MARGIN, FIG_SIZE
 
 
-def debug(data, filename="test.png"):
-    time = np.linspace(0., len(data), data.shape[0])
-    plt.figure(figsize=FIG_SIZE)
-    plt.plot(time, data)
-
-    plt.gca().set_xlabel('$t[ms]$')
-    plt.gca().set_title('Signal')
-    plt.tight_layout()
-
-    plt.savefig(path.join("outputs", filename))
-
-
 def plot(data, filename, figsize=FIG_SIZE, title="Title", xlabel="x", ylabel="y", plot_label=None,
          xspan=(0., -1.), correl_samplerate=0):
     if float(xspan[1]) != -1.:
@@ -31,9 +19,6 @@ def plot(data, filename, figsize=FIG_SIZE, title="Title", xlabel="x", ylabel="y"
         plt.plot(time, data, label=plot_label)
     else:
         plt.plot(time, data)
-
-    # plt.gca().set_xticks([0, len(data)/4, len(data)/2, 3*len(data)/4, len(data)])
-    # plt.gca().set_xticklabels()
 
     plt.gca().set_xlabel(xlabel)
     plt.gca().set_ylabel(ylabel)
@@ -70,9 +55,6 @@ def plot_list(datalist, filename, figsize=FIG_SIZE, title="Title", xlabel="x", y
             plt.plot(time, datalist[i], label=plot_labels[i])
         else:
             plt.plot(time, datalist[i])
-
-    # plt.gca().set_xticks([0, len(data)/4, len(data)/2, 3*len(data)/4, len(data)])
-    # plt.gca().set_xticklabels()
 
     plt.gca().set_xlabel(xlabel)
     plt.gca().set_ylabel(ylabel)
