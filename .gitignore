@@ -2,3 +2,4 @@ venv/
 *.wav
 /src/outputs/
 /doc/build/*
+__pycache__
