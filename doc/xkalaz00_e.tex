@@ -260,11 +260,16 @@
     \newpage
     \section*{Solution - additional tasks}
 
+    All of the next tasks recreate the signal frames,
+    so that each task can be compared to the results from the base solution
+
     \begin{enumerate}
         \item[11.]
         Window function
 
-        The Hann window function has been used.
+        We created the window using \texttt{get\_window} from \texttt{scipy.signal}
+
+        The slected window function that has been used was the "Hann window" with the following properties:
 
         \includegraphics[width=\linewidth]{11_window.pdf} \\
         \includegraphics[width=\linewidth]{11_response.pdf}
@@ -276,7 +281,7 @@
         \includegraphics[width=\linewidth]{11_frames_after.pdf}
 
         \newpage
-        Frame spectral density
+        Comparison of specral densities before and after applying the window function:
 
         \includegraphics[width=\linewidth]{11_frame_spectrum_before.pdf} \\
         \includegraphics[width=\linewidth]{11_frame_spectrum_after.pdf}
@@ -284,11 +289,14 @@
         From the above figures we can see that the window function
         supresses the frequencies on the edge of the spectrum and the resulting frequency spectrum is overall smoother.
 
-        Window functions are used for distributing the spectral leakage introduced by examining longer signals.
+        Window functions are useful for distributing the spectral leakage introduced by examining longer signals.
 
         \vspace{6mm}
         \item[13.]
-        Filter from only frames with matching base frequencies
+        Filter constructed from only frames with matching base frequencies
+
+        The needed frames were collected during task 4 and the frequency response
+        (which is normally constructed in task 5) was instead contructed from these selected frames only.
 
         \includegraphics[width=\linewidth]{6_frequency_response.pdf} \\
         \includegraphics[width=\linewidth]{13_frequency_response.pdf}
