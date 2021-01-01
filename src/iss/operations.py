@@ -80,7 +80,7 @@ def overlap_add(data, flt):
     return filtered_data[:samples]
 
 
-def align_frames(frames1, frames2, samplerate, min_corr_margin=3):
+def align_frames(frames1, frames2, samplerate, min_corr_margin=0):
     max_margin = int(samplerate / (ALIGN_MIN_FREQ * 2))
     target_frame_size = int(samplerate * ALIGNED_FRAME_DURATION)
 
