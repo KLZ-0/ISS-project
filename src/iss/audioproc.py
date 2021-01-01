@@ -139,12 +139,9 @@ class AudioProcessor:
                         title="Spectrogram - mask on")
 
     def task6(self):
-        # t_on = np.mean(np.abs(self.fft_on), axis=0)
-        # t_off = np.mean(np.abs(self.fft_off), axis=0)
-        # self.freq_response = t_on / (t_off + 1e-20)
-
-        t = abs(self.fft_on / self.fft_off)
-        self.freq_response = np.mean(t, axis=0)
+        t_on = np.mean(np.abs(self.fft_on), axis=0)
+        t_off = np.mean(np.abs(self.fft_off), axis=0)
+        self.freq_response = t_on / (t_off + 1e-20)
 
         if self.run_n == 0:
             plotter.plot(operations.logarithmize_spectrum(self.freq_response), "6_frequency_response.pdf",

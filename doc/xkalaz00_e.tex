@@ -184,7 +184,7 @@
         For the frequency response we need to calculate the the mean from all frames.
 
         \begin{gather*}
-            H(e^{j\omega}) = \frac{1}{N} \sum_{n=0}^{N-1} \frac{ B_n(e^{j\omega}) }{ A_n(e^{j\omega}) } \\
+            H(e^{j\omega}) = \frac{ \frac{1}{N} \sum\limits_{n=0}^{N-1} B_n(e^{j\omega}) }{ \frac{1}{N} \sum\limits_{n=0}^{N-1} A_n(e^{j\omega}) } \\
             N \text{ - frame count, } A_n, B_n \text{ - spectrums for frame n}
         \end{gather*}
 
@@ -193,6 +193,9 @@
         From the filters frequency response we can see that the gain oscillates frequently
         over the lower half of the frequency range,
         which may be caused by the varying base frequency of the input signals.
+
+        Around 6~kHz we can see a sudden negative gain spike,
+        so our filter supresses these frequencies.
 
         \item
         Impulse response
@@ -337,8 +340,8 @@
         \includegraphics[width=\linewidth]{6_frequency_response.pdf} \\
         \includegraphics[width=\linewidth]{13_frequency_response.pdf}
 
-        From the above figures, we can see that using only frames with matching base frequencies supresses
-        sudden spikes in the frequency response
+        From the above figures, we can see that using only frames with matching base frequencies distributes
+        sudden spikes in the frequency response, such as the spike around 6~kHz.
 
         \newpage
         \item[15.]
