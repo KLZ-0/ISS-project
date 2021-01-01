@@ -1,4 +1,5 @@
 import sys
+from os import path
 from pathlib import Path
 
 from iss.audioproc import AudioProcessor
@@ -20,3 +21,5 @@ def setup_environment():
 def process_all():
     proc = AudioProcessor()
     proc.process_signals()
+
+    print("Outputs generated to: " + path.abspath("outputs"))
