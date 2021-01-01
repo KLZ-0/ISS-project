@@ -249,7 +249,7 @@ class AudioProcessor:
 
     def task13b(self):
         plotter.plot(operations.logarithmize_spectrum(self.freq_response), "13_frequency_response.pdf",
-                     title="Frequency response (only from matching frames)",
+                     title="Mask Frequency response (only from matching frames)",
                      xlabel="Frequency [Hz]",
                      ylabel="Gain [dB]",
                      xspan=(0, self.off_sr / 2))
