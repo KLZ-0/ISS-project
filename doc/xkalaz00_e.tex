@@ -92,10 +92,10 @@
 
         Then the DC bias has been removed and the signals were normalized.
 
-        The base tasks are calculated with 20ms frames extracted from the signal, resulting in a total of 99 frames
+        The base tasks are calculated with 20~ms frames extracted from the signal, resulting in a total of 99 frames
         (the last half-frame is ignored).
 
-        We later recreate the frames with a 25ms duration for task 15.
+        We later recreate the frames with a 25~ms duration for task 15.
 
         \vspace{2mm}
         \textbf{Calculation of the frame size:}
@@ -115,9 +115,9 @@
         Mean and variance of base frequencies: \\
         \begin{tabular}{ | l | l | l | }
             \hline
-            \textbf{Signal}       & \textbf{Mean} $[Hz]$ & \textbf{Variance} $[Hz]$ \\ \hline
-            maskoff\_sentence.wav & 139.466              & 0.803                    \\ \hline
-            maskon\_sentence.wav  & 143.478              & 1.883                    \\ \hline
+            \textbf{Signal} & \textbf{Mean} $[Hz]$ & \textbf{Variance} $[Hz]$ \\ \hline
+            mask off        & 166.638              & 1.094                    \\ \hline
+            mask on         & 164.563              & 1.503                    \\ \hline
         \end{tabular}
 
         \vspace{2mm}
@@ -253,7 +253,11 @@
         The filters weird behaviour may also be caused by a smaller difference between the tone recordings
         that the filter has been constructed from.
 
-        Even though our calculations should be right, the results aren't good enough to be considered "acceptable".
+        Even though our calculations should be right, the base results aren't good enough to be considered "acceptable".
+
+        Our additional tasks yielded a little bit better results,
+        which in the case of an applied window function
+        with phase shift could even be considered as "somewhat acceptable".
 
     \end{enumerate}
 
@@ -307,6 +311,12 @@
         \newpage
         \item[15.]
         Phase shift
+
+        The advised operations were performed on the frames, including center clipping,
+        correlation both ways and determining the needed shift
+        in the righ direction (with the smaller number of samples).
+
+        Next the frames were cut so their phases match and a final cut was made to shorten every frame to 20~ms.
 
         \includegraphics[width=\linewidth]{15_frames_before.pdf} \\
         \includegraphics[width=\linewidth]{15_frames_after.pdf} \\
