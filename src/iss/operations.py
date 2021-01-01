@@ -63,6 +63,20 @@ def apply_filter(data, flt):
     return lfilter(a=[1], b=flt.real, x=data)
 
 
+def overlap_add(data, flt):
+    N = 1024
+    step = N - flt.shape[0] + 1
+    samples = data.shape[0]
+
+    flt_fft = fft(flt, n=N)
+
+    ret_data = np.zeros(samples + N)
+    for n in range(0, samples, step):
+        ret_data[n:n + N] += ifft(fft(data[n:n + step], n=N) * flt_fft).real
+
+    return ret_data[:samples]
+
+
 def align_frames(frames1, frames2, samplerate, min_corr_margin=3):
     max_margin = int(samplerate / (ALIGN_MIN_FREQ * 2))
     target_frame_size = int(samplerate * ALIGNED_FRAME_DURATION)
