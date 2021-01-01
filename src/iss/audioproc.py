@@ -185,6 +185,10 @@ class AudioProcessor:
     def task10(self):
         dt = operations.overlap_add(self.off_sentence, self.impulse_response)
         iss.io.save_file("sim_maskon_sentence_overlap_add.wav", dt, self.off_sentence_sr)
+        plotter.plot(dt, "10_signal_filtered.pdf",
+                     title="Filtered signal - overlap-add (maskoff + filter)",
+                     xlabel="Time [s]",
+                     xspan=(0, dt.shape[0] / self.off_sentence_sr))
 
         dt = operations.overlap_add(self.off_tone, self.impulse_response)
         iss.io.save_file("sim_maskon_tone_overlap_add.wav", dt, self.off_tone_sr)
@@ -230,9 +234,6 @@ class AudioProcessor:
 
     def task11b(self):
         dt = operations.apply_filter(self.off_sentence, self.impulse_response)
-        plotter.plot(dt, "11_signal_filtered.pdf",
-                     title="Filtered signal (maskoff + phase shift + window + filter)",
-                     xlabel="Time [s]")
         iss.io.save_file("sim_maskon_sentence_window.wav", dt, self.off_sentence_sr)
 
         dt = operations.apply_filter(self.off_tone, self.impulse_response)
@@ -290,9 +291,6 @@ class AudioProcessor:
 
     def task15b(self):
         dt = operations.apply_filter(self.off_sentence, self.impulse_response)
-        plotter.plot(dt, "15_signal_filtered.pdf",
-                     title="Filtered signal (maskoff + phase shift + filter)",
-                     xlabel="Time [s]")
         iss.io.save_file("sim_maskon_sentence_phase.wav", dt, self.off_sentence_sr)
 
         dt = operations.apply_filter(self.off_tone, self.impulse_response)

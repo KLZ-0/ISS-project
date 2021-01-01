@@ -64,18 +64,20 @@ def apply_filter(data, flt):
 
 
 def overlap_add(data, flt):
-    # L is customarily chosen such that N = L+M-1 is an integer power-of-2
+    # L is chosen such that N = L+M-1 is an integer power-of-2
     N = 2 << (flt.shape[0] - 1).bit_length()
     step = N - flt.shape[0] + 1
     samples = data.shape[0]
 
     flt_fft = fft(flt, n=N)
 
-    ret_data = np.zeros(samples + N)
+    filtered_data = np.zeros(samples + N)
     for n in range(0, samples, step):
-        ret_data[n:n + N] += ifft(fft(data[n:n + step], n=N) * flt_fft).real
+        filtered_data[n:n + N] += ifft(
+            fft(data[n:n + step], n=N) * flt_fft
+        ).real
 
-    return ret_data[:samples]
+    return filtered_data[:samples]
 
 
 def align_frames(frames1, frames2, samplerate, min_corr_margin=3):

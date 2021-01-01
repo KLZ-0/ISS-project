@@ -268,6 +268,38 @@
     so that each task can be compared to the results from the base solution
 
     \begin{enumerate}
+        \item[10.]
+        Overlap-add
+
+        The overlap-add method implementation:
+
+        % @formatter:off
+        % implementation from https://en.wikipedia.org/wiki/Overlap%E2%80%93add_method
+        \begin{minted}[resetmargins=true,tabsize=4, python3=true]{python}
+        def overlap_add(data, flt):
+            # L is chosen such that N = L+M-1 is an integer power-of-2
+            N = 2 << (flt.shape[0] - 1).bit_length()
+            step = N - flt.shape[0] + 1
+            samples = data.shape[0]
+
+            flt_fft = fft(flt, n=N)
+
+            filtered_data = np.zeros(samples + N)
+            for n in range(0, samples, step):
+                filtered_data[n:n + N] += ifft(
+                    fft(data[n:n + step], n=N) * flt_fft
+                ).real
+
+            return filtered_data[:samples]
+        \end{minted}
+        % @formatter:on
+
+        \includegraphics[width=\linewidth]{8_signal_filtered.pdf} \\
+        \includegraphics[width=\linewidth]{10_signal_filtered.pdf}
+
+        From the above figures, we can see that both filtering methods produce very similar results.
+
+        \newpage
         \item[11.]
         Window function
 
