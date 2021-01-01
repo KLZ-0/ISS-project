@@ -224,12 +224,36 @@
         \item
         Filtered signal
 
+        We applied the signal using \texttt{lfilter} from \texttt{scipy.signal}
+
         \includegraphics[width=\linewidth]{8_signal_maskoff.pdf} \\
-        \includegraphics[width=\linewidth]{8_signal_maskon.pdf} \\
-        \includegraphics[width=\linewidth]{8_signal_filtered.pdf}
+        \includegraphics[width=\linewidth]{8_signal_filtered.pdf} \\
+        \includegraphics[width=\linewidth]{8_signal_maskon.pdf}
+
+        From the above figures we can see that the target signal and the filtered signal are different in most aspects.
+
+        This is probably because of the differences in recording
+        (we can see that the tones between the "mask off" and "mask on") recordings are not very similar.
+
+        The filter seems to reduce a little bit of low frequency noise, but it's hardly noticeable.
+
+        Overall the filter seems to "not do much",
+        although in the recordings we can hear a little bit of a "dampening" effect.
 
         \item
         Conclusion
+
+        The biggest problem we encountered was that we didn't have access to an example signal
+        on which our calculations could be tested and this caused our results to be very dependent
+        on our own recordings.
+
+        This introduced quite a few problems
+        as we didn't know if our calculations are right at any point.
+
+        The filters weird behaviour may also be caused by a smaller difference between the tone recordings
+        that the filter has been constructed from.
+
+        Even though our calculations should be right, the results aren't good enough to be considered "acceptable".
 
     \end{enumerate}
 
