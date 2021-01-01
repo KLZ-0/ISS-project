@@ -44,7 +44,9 @@ class AudioProcessor:
         self.task5()
         self.task6()
         self.task7()
+        plotter.flush()
         self.task8()
+        self.task10()
         plotter.flush()
 
         # task 13
@@ -180,20 +182,12 @@ class AudioProcessor:
         dt = operations.apply_filter(self.off_tone, self.impulse_response)
         iss.io.save_file("sim_maskon_tone.wav", dt, self.off_tone_sr)
 
-        # ft = operations.apply_filter(self.off_frames[0], np.abs(self.impulse_response))
+    def task10(self):
+        dt = operations.overlap_add(self.off_sentence, self.impulse_response)
+        iss.io.save_file("sim_maskon_sentence_overlap_add.wav", dt, self.off_sentence_sr)
 
-        # from numpy.fft import fft
-        # plotter.plot_list([abs(fft(self.off_frames[0], 1024)[:512]),
-        #                    abs(fft(self.on_frames[0], 1024)[:512]),
-        #                    abs(fft(ft, 1024)[:512])
-        #                    ],
-        #                   "debug.pdf", plot_labels=["original", "target", "filtered"])
-
-        # plotter.plot_list([self.off_frames[0],
-        #                    self.on_frames[0],
-        #                    ft
-        #                    ],
-        #                   "debug.pdf", plot_labels=["original", "target", "filtered"])
+        dt = operations.overlap_add(self.off_tone, self.impulse_response)
+        iss.io.save_file("sim_maskon_tone_overlap_add.wav", dt, self.off_tone_sr)
 
     def task11(self):
         plotter.flush()

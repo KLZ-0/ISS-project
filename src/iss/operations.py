@@ -64,7 +64,8 @@ def apply_filter(data, flt):
 
 
 def overlap_add(data, flt):
-    N = 1024
+    # L is customarily chosen such that N = L+M-1 is an integer power-of-2
+    N = 2 << (flt.shape[0] - 1).bit_length()
     step = N - flt.shape[0] + 1
     samples = data.shape[0]
 
