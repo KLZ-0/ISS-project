@@ -1,6 +1,10 @@
+import sys
 from os import path
 
 audiopath = path.join(path.dirname(path.dirname(path.dirname(__file__))), "audio")
+if not path.isdir(audiopath):
+    print("The directory '" + path.abspath(audiopath) + "' does not exist", file=sys.stderr)
+    sys.exit(1)
 
 # 20ms frames @ 16kHz
 # because of 15 -> 25
