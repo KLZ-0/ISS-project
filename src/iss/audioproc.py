@@ -146,7 +146,7 @@ class AudioProcessor:
 
         if self.run_n == 0:
             plotter.plot(operations.logarithmize_spectrum(self.freq_response), "6_frequency_response.pdf",
-                         title="Frequency response",
+                         title="Mask frequency response",
                          xlabel="Frequency [Hz]",
                          ylabel="Gain [dB]",
                          xspan=(0, self.off_sr / 2))
@@ -155,7 +155,7 @@ class AudioProcessor:
         self.impulse_response = operations.impulse_response(self.freq_response)
         if self.run_n == 0:
             plotter.plot(np.abs(self.impulse_response), "7_impulse_response.pdf",
-                         title="Impulse response",
+                         title="Mask impulse response",
                          xlabel="Time [s]",
                          xspan=(0, ALIGNED_FRAME_DURATION))
 
