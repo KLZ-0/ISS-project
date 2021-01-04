@@ -153,7 +153,7 @@ class AudioProcessor:
     def task7(self):
         self.impulse_response = operations.impulse_response(self.freq_response)
         if self.run_n == 0:
-            plotter.plot(np.abs(self.impulse_response), "7_impulse_response.pdf",
+            plotter.plot(self.impulse_response.real, "7_impulse_response.pdf",
                          title="Mask impulse response",
                          xlabel="Time [s]",
                          xspan=(0, ALIGNED_FRAME_DURATION))
