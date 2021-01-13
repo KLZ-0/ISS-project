@@ -7,6 +7,12 @@ from iss import plotter, operations
 from iss.res import ALIGNED_FRAME_DURATION
 
 
+# Post-submission note:
+# This was implemented in a tight time constraint and the code should be optimized and reformatted
+# but because this code was already submitted I am not going to do so...
+#
+# e.g. the plotting should have been separated from the task methods
+# -> some the tasks need to be run multiple times (this would eliminate the need for "run_n")
 class AudioProcessor:
     run_n = 0
 
